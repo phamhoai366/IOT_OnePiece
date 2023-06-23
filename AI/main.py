@@ -7,7 +7,7 @@ import cv2
 model = yolov5.load('best.pt')
 
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("1.mp4")
 
 while(True):
     # Capture frame-by-frame
@@ -23,7 +23,6 @@ while(True):
     model.max_det = 1000  # maximum number of detections per image
 
     img =cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-    img2=img
 
     # perform inference
     results = model(img)
@@ -45,11 +44,11 @@ while(True):
     
     if len(a)!=0:
 
-        img= cv2.rectangle(img2, (int(a[0][0]),int(a[0][1])), (int(a[0][2]),int(a[0][3])), (0,0,255))
-        img=cv2.resize(img,dsize=(700,500))
+        frame= cv2.rectangle(frame, (int(a[0][0]),int(a[0][1])), (int(a[0][2]),int(a[0][3])), (0,0,255),2)
+        frame=cv2.resize(frame,dsize=(700,700))
     #    # Display the resulting frame
     
-    cv2.imshow('frame',img)
+    cv2.imshow('frame',frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
