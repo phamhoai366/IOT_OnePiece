@@ -13,8 +13,6 @@ void setup()
     delay(5000);
     Serial.println("Connecting to WiFi...");
   }
-
-  
 }
 
 void loop() {
