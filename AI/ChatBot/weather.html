@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lấy thông tin thời tiết hôm nay</title>
+</head>
+
+<body>
+    <h1>Thông tin thời tiết hôm nay</h1>
+
+    <div id="weatherInfo"></div>
+
+    <script>
+        // Hàm gửi yêu cầu HTTP GET đến API thời tiết
+        function getWeatherData(url, callback) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    callback(data);
+                }
+            };
+            xhr.send();
+        }
+
+        // Lấy thông tin thời tiết hôm nay
+        function getTodayWeather() {
+            const apiKey = '7b12eafd717e867bd7f42e57761bb408';
+            const city = 'HaNoi';
+
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
+            getWeatherData(url, displayWeather);
+        }
+
+        // Hiển thị thông tin thời tiết
+        function displayWeather(data) {
+            const weatherInfo = document.getElementById('weatherInfo');
+            const temperature = data.main.temp;
+            const description = data.weather[0].description;
+
+            // Chuyển đổi đơn vị nhiệt độ từ Kelsius thành Celsius
+            const temperatureCelsius = temperature - 273.15;
+
+            weatherInfo.textContent = `Nhiệt độ: ${temperatureCelsius.toFixed(1)}°C, Tình trạng: ${description}`;
+            console.log(`Nhiệt độ: ${temperatureCelsius.toFixed(1)}°C, Tình trạng: ${description}`)
+        }
+
+        // Gọi hàm để lấy thông tin thời tiết hôm nay khi trang được tải
+        window.onload = function () {
+            getTodayWeather();
+        };
+    </script>
+</body>
+
+</html>

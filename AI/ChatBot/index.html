@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chuyển giọng nói thành chữ</title>
+</head>
+
+<body>
+    <h1>Chuyển giọng nói thành chữ</h1>
+
+    <button id="startBtn">Bắt đầu ghi âm</button>
+    <div id="output"></div>
+
+    <script>
+        const recognition = new webkitSpeechRecognition(); // Tạo đối tượng nhận diện giọng nói
+
+        const output = document.getElementById('output'); // Lấy thẻ HTML để hiển thị văn bản
+
+        recognition.lang = 'vi-VN'; // Đặt ngôn ngữ cho giọng nói (ví dụ: tiếng Anh - Mỹ)
+
+        // Xử lý sự kiện khi nhận diện giọng nói thành công
+        recognition.onresult = (event) => {
+            const result = event.results[event.results.length - 1][0].transcript;
+            output.textContent = result; // Hiển thị văn bản đã chuyển đổi từ giọng nói
+            if (result.toLowerCase() == "ăn cơm chưa") {
+                console.log("oke đã ăn")
+            }
+            if (result.toLowerCase() == "bật đèn") {
+                console.log("oke đã bật")
+            }
+        };
+
+        // Xử lý sự kiện khi nhấn nút bắt đầu ghi âm
+        document.getElementById('startBtn').addEventListener('click', () => {
+            recognition.start(); // Bắt đầu ghi âm
+        });
+    </script>
+</body>
+
+</html>
