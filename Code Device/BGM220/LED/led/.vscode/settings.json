@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "*.html": "html",
+        "em_timer.h": "c",
+        "em_emu.h": "c",
+        "em_cmu.h": "c",
+        "em_gpio.h": "c"
+    }
+}

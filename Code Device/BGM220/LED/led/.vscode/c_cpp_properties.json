@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "led",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Users/hieu2/SimplicityStudio/SDKs/gecko_sdk/**"
+            ],
+            "defines": [
+                "DEBUG_EFM=1",
+                "BGM220PC22HNA=1",
+                "SL_COMPONENT_CATALOG_PRESENT=1"
+            ],
+            "compilerPath": "H:/Si/developer/toolchains/gnu_arm/10.3_2021.10/bin/arm-none-eabi-gcc"
+        }
+    ],
+    "version": 4
+}
