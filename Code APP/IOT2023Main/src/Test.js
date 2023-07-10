@@ -1,38 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from "react";
 import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
+import { View, Text } from "react-native";
+import {
+  getDatabase,
+  ref,
+  set,
+  onValue,
+  child,
+  get,
+  off,
+} from "firebase/database";
 
-
-const MyComponent = () => {
-  const [data, setData] = useState(null);
+const Test = () => {
+  const [d, setData] = useState([]);
 
   useEffect(() => {
-    // Thực hiện đọc dữ liệu từ Firebase Realtime Database
-    const fetchData = async () => {
-      try {
-        const s = await FireBaseConfigAPP.database().ref('user').on("value", function (snapshot) {
-          var users = snapshot.val();
-          for (var key in users) {
-              if (users.hasOwnProperty(key)) {
-                  var user = users[key];
-                  console.log(user);
-              }
-          }
-      });
-        setData(s);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    const db = getDatabase(FireBaseConfigAPP);
+    const starCountRef = ref(db, "users/");
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      setData(data.username);
+      console.log("data: ", data);
+    });
 
-    fetchData();
+    // Clean up listener when component unmounts
+    return () => {
+      off(child(ref(getDatabase(FireBaseConfigAPP))), "value");
+    };
   }, []);
 
   return (
-    <View>
-      <Text>Data: {data}</Text>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text >{d}</Text>
     </View>
   );
 };
 
-export default MyComponent;
+export default Test;
