@@ -5,6 +5,8 @@ const colors = {
   backgroundtextinput:'#EFF5F5',
   background: '#002B5B',
   background2:'#E6FFFD',
+  background3:'#FAF0D7',
+  background4:'#8CC0DE',
   button: '#ECF2FF',
   text: '#03001C',
 };

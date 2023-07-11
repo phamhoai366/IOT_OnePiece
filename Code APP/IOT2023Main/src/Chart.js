@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { LineChart, BarChart } from "react-native-chart-kit";
+import { colors } from "../theme";
 
 const Chart = () => {
   const [activeTab, setActiveTab] = useState("day");
@@ -9,7 +10,7 @@ const Chart = () => {
       labels: ["8AM", "10AM", "12PM", "2PM", "4PM", "6PM", "8PM"],
       datasets: [
         {
-          data: [0.5, 1, 1.5, 2, 1, 2, 0.5],
+          data: [0.5, 1, 1.5, 2, 1, 1, 0.5],
         },
       ],
     },
@@ -73,9 +74,9 @@ const Chart = () => {
           width={400}
           height={400}
           chartConfig={{
-            backgroundGradientFrom: "#FFFFFF",
-            backgroundGradientTo: "#ff9999",
-            color: (opacity = 1) => `rgba(0, 0, 102, ${opacity})`,
+            backgroundGradientFrom: "#DAFFFB",
+            backgroundGradientTo: "#C1ECE4",
+            color: (opacity = 1) => `rgba(10, 100, 255, ${opacity})`,
             strokeWidth: 50,
             barPercentage: 0.5, // Độ rộng của các cột chỉ chiếm 50% trên trục x
             barRadius: 4, // Độ cong nhẹ của các cột
@@ -90,9 +91,9 @@ const Chart = () => {
           width={400}
           height={400}
           chartConfig={{
-            backgroundGradientFrom: "#FFFFFF",
-            backgroundGradientTo: "#ff9999",
-            color: (opacity = 1) => `rgba(0, 0, 102, ${opacity})`,
+            backgroundGradientFrom: "#DAFFFB",
+            backgroundGradientTo: "#C1ECE4",
+            color: (opacity = 1) => `rgba(10, 100, 255, ${opacity})`,
             strokeWidth: 2,
           }}
           bezier
@@ -168,10 +169,7 @@ const Chart = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffe6e6",
-    borderColor: "#ffb3b3",
-    borderWidth: 20,
-    borderRadius: 20,
+    backgroundColor:colors.blue1,
     alignItems: "center",
     justifyContent: "center",
   },
