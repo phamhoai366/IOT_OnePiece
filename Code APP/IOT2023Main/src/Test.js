@@ -1,39 +1,57 @@
-import React, { useState, useEffect } from "react";
-import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
-import { View, Text } from "react-native";
-import {
-  getDatabase,
-  ref,
-  set,
-  onValue,
-  child,
-  get,
-  off,
-} from "firebase/database";
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Animated, StyleSheet } from 'react-native';
 
 const Test = () => {
-  const [d, setData] = useState([]);
+  const [brightness, setBrightness] = useState(50); // Giá trị ban đầu của độ sáng
 
-  useEffect(() => {
-    const db = getDatabase(FireBaseConfigAPP);
-    const starCountRef = ref(db, "users/");
-    onValue(starCountRef, (snapshot) => {
-      const data = snapshot.val();
-      setData(data.username);
-      console.log("data: ", data);
-    });
+  const handleTouchStart = () => {
+    // Khi người dùng chạm vào vòng tròn
+    setBrightness(100);
+  };
 
-    // Clean up listener when component unmounts
-    return () => {
-      off(child(ref(getDatabase(FireBaseConfigAPP))), "value");
-    };
-  }, []);
+  const handleTouchEnd = () => {
+    // Khi người dùng rời tay
+    setBrightness(0);
+  };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text >{d}</Text>
+    <View style={styles.container}>
+      <Text style={styles.label}>Độ sáng: {brightness}</Text>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPressIn={handleTouchStart}
+        onPressOut={handleTouchEnd}
+      >
+        <Animated.View
+          style={[
+            styles.circle,
+            {
+              backgroundColor: `rgba(255, 255, 255, ${brightness / 100})`,
+              transform: [{ scale: brightness / 100 }]
+            }
+          ]}
+        />
+      </TouchableOpacity>
     </View>
   );
-};
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  label: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  circle: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+  },
+});
 
 export default Test;

@@ -8,7 +8,7 @@ import Camera from "./src/Camera";
 
 
 const App = () => (
- <Test/>
+ <Main/>
 );
 
 export default App;

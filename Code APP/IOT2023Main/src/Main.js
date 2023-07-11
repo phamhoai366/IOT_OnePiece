@@ -1,53 +1,111 @@
 import { Component } from "react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import MainDevice from "./MainDevice";
-//import Horizontal_ScrollView from "./horizontalScrollView";
+import { colors, sizes } from "../theme";
+import {
+  getDatabase,
+  ref,
+  set,
+  onValue,
+  child,
+  get,
+  off,
+} from "firebase/database";
+import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
 
-const Main = () => (
-  <View style={styles.container}>
-    <View style={{ flex: 1 }}>
-      <View style={{ zIndex: 2, flex: 10, backgroundColor: "red" }}>
-        <Text style={{ fontSize: 40 }}>Dash Board</Text>
-        <View style={styles.container}>
-          <ScrollView
-            style={styles.scrollview}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          >
-            <View style={styles.box}>
-              <Text style={styles.text}>Nhiệt độ thời tiết</Text>
-            </View>
-            <View style={styles.box}>
-              <Text style={styles.text}>Số thiết bị đang kết nối</Text>
-            </View>
-            <View style={styles.box}>
-              <Text style={styles.text}>3</Text>
-            </View>
-          </ScrollView>
-        </View>
-      </View>
+const Main = () => {
+  const [Gas, setGas] = useState([]);
+  const [HeatIndex, setHeatIndex] = useState([]);
+  const [Humidity, setHumidity] = useState([]);
+  const [Led, setLed] = useState([]);
+  const [Motion, setMotion] = useState([]);
+  const [Temperature, setTemperature] = useState([]);
+  const [NumberDevice, setNumberDevice] = useState([]);
 
-      <View style={{ zIndex: 1, flex: 20, backgroundColor: "green" }}>
-        <MainDevice />
-      </View>
-      <View style={{ flex: 2, backgroundColor: "blue", flexDirection: "row" }}>
-        <View style={{ flex: 1, backgroundColor: "white" }}>
-          <Text>Main</Text>
+  useEffect(() => {
+    const db = getDatabase(FireBaseConfigAPP);
+    const starCountRef = ref(db, "DiaChiNhaHoai/Room1/");
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      setGas(data.Gas);
+      setHeatIndex(data.HeatIndex);
+      setHumidity(data.Humidity);
+      setLed(data.Led);
+      setMotion(data.Motion);
+      setNumberDevice(data.NumberDevice);
+      setTemperature(data.Temperature);
+      console.log("data: ", data.Gas);
+    });
+
+    // Clean up listener when component unmounts
+    return () => {
+      off(child(ref(getDatabase(FireBaseConfigAPP))), "value");
+    };
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <View style={{ flex: 1 }}>
+        <View style={{ zIndex: 2, flex: 10, backgroundColor: colors.blue1 }}>
+          <Text style={{ fontSize: 40 }}>Dash Board</Text>
+          <View style={styles.container}>
+            <ScrollView
+              style={styles.scrollview}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <View style={styles.box}>
+                <Text style={styles.text}>Temperature: {Temperature}</Text>
+              </View>
+              <View style={styles.box}>
+                <Text style={styles.text}>
+                  Số thiết bị đang kết nối: {NumberDevice}
+                </Text>
+              </View>
+              <View style={styles.box}>
+                <Text style={styles.text}>Công suất sử dụng: 35 W</Text>
+              </View>
+            </ScrollView>
+          </View>
         </View>
-        <View style={{ flex: 1, backgroundColor: "green" }}>
-          <Text>Lập lịch</Text>
+
+        <View
+          style={{
+            zIndex: 1,
+            flex: 20,
+            backgroundColor: colors.background2,
+          }}
+        >
+          <MainDevice />
         </View>
-        <View style={{ flex: 1, backgroundColor: "white" }}>
-          <Text>Trợ lí ảo</Text>
-        </View>
-        <View style={{ flex: 1, backgroundColor: "green" }}>
-          <Text>Cài đặt</Text>
+        <View
+          style={{
+            flex: 2,
+            flexDirection: "row",
+            borderTopWidth: 2,
+            borderTopColor: "#9DB2BF",
+            //justifyContent:"center",
+            //alignContent:"center"
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <Text>Main</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text>Lập lịch</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text>Trợ lí ảo</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text>Cài đặt</Text>
+          </View>
         </View>
       </View>
     </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -63,7 +121,7 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "gray",
+    backgroundColor: colors.blue2,
     marginRight: 20,
   },
   scrollview: {
