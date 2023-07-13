@@ -1,5 +1,7 @@
 import pyrebase
+import cv2
 
+cap = cv2.VideoCapture(0)
 
 firebaseConfig = {
   "apiKey": "AIzaSyAXDfYJ3F-N2C5QuoT4PLQv7xRYU9NoKQc",
@@ -15,4 +17,20 @@ firebaseConfig = {
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 storage=firebase.storage()
-storage.child("1.jpg").put("1.jpg")
+
+while (1):
+  
+  ret, frame = cap.read()
+
+
+  cv2.imwrite("temp.jpg", frame)
+
+  # Gửi ảnh lên Firebase Storage
+  storage.child("image/cam.jpg").put("temp.jpg")
+  if cv2.waitKey(1) & 0xFF == ord('q'):
+    break
+  
+cap.release()
+cv2.destroyAllWindows()
+
+
