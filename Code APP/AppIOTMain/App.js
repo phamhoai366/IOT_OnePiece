@@ -1,9 +1,9 @@
 import { Component } from "react";
 import React from "react";
 
-import Chart from "./src/Test";
+import LoginScreen from "./src/Test";
 const App = () => (
- <Chart/>
+ <LoginScreen/>
 );
 
 export default App;

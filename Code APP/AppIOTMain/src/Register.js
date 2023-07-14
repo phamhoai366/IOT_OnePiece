@@ -5,7 +5,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { colors, sizes } from "../theme";
 
 
-const SignupScreen = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -131,4 +131,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupScreen;
+export default Register;

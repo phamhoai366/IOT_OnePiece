@@ -1,220 +1,127 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { LineChart, BarChart } from "react-native-chart-kit";
-import { colors } from "../theme";
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
+import Slider from '@react-native-community/slider';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { colors } from '../theme';
 const Led = () => {
-  const [activeTab, setActiveTab] = useState("day");
-  const data = {
-    day: {
-      labels: ["8AM", "10AM", "12PM", "2PM", "4PM", "6PM", "8PM"],
-      datasets: [
-        {
-          data: [0.5, 1, 1.5, 2, 1, 1, 0.5],
-        },
-      ],
-    },
-    week: {
-      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-      datasets: [
-        {
-          data: [6, 7, 5, 8, 6.5, 9, 10.5],
-        },
-      ],
-    },
-    year: {
-      labels: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
-      datasets: [
-        {
-          data: [120, 140, 135, 150, 145, 160, 155, 170, 165, 180, 175, 190],
-        },
-      ],
-    },
-  };
+  const [brightnessValues, setBrightnessValues] = useState({
+    livingRoom: 0,
+    bedRoom: 0,
+    kitchen: 0,
+    workRoom: 0
+  });
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
-  const getLowestConsumption = () => {
-    const lowestValue = Math.min(...data[activeTab].datasets[0].data);
-    return lowestValue;
-  };
-
-  const getHighestConsumption = () => {
-    const highestValue = Math.max(...data[activeTab].datasets[0].data);
-    return highestValue;
-  };
-
-  const getAverageConsumption = () => {
-    const averageValue =
-      data[activeTab].datasets[0].data.reduce((a, b) => a + b, 0) /
-      data[activeTab].datasets[0].data.length;
-    return averageValue.toFixed(2);
-  };
-
-  const renderChart = () => {
-    if (activeTab === "year") {
-      return (
-        <BarChart
-          data={data[activeTab]}
-          width={400}
-          height={400}
-          chartConfig={{
-            backgroundGradientFrom: "#DAFFFB",
-            backgroundGradientTo: "#C1ECE4",
-            color: (opacity = 1) => `rgba(10, 100, 255, ${opacity})`,
-            strokeWidth: 50,
-            barPercentage: 0.5, // Độ rộng của các cột chỉ chiếm 50% trên trục x
-            barRadius: 4, // Độ cong nhẹ của các cột
-          }}
-          style={styles.chart}
-        />
-      );
-    } else {
-      return (
-        <LineChart
-          data={data[activeTab]}
-          width={400}
-          height={400}
-          chartConfig={{
-            backgroundGradientFrom: "#DAFFFB",
-            backgroundGradientTo: "#C1ECE4",
-            color: (opacity = 1) => `rgba(10, 100, 255, ${opacity})`,
-            strokeWidth: 2,
-          }}
-          bezier
-          style={styles.chart}
-        />
-      );
-    }
+  const updateBrightness = (room, brightness) => {
+    // Update the brightness value for the selected room
+    console.log('Room:', room, 'Brightness:', brightness);
+    setBrightnessValues((prevValues) => ({
+      ...prevValues,
+      [room]: brightness
+    }));
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Statistics</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.frame}>
 
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[styles.tabItem, activeTab === "day" && styles.activeTabItem]}
-          onPress={() => handleTabChange("day")}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "day" && styles.activeTabText,
-            ]}
-          >
-            Day
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tabItem, activeTab === "week" && styles.activeTabItem]}
-          onPress={() => handleTabChange("week")}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "week" && styles.activeTabText,
-            ]}
-          >
-            Week
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tabItem, activeTab === "year" && styles.activeTabItem]}
-          onPress={() => handleTabChange("year")}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "year" && styles.activeTabText,
-            ]}
-          >
-            Year
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require('../assets/device/led-light.png')}
+            style={styles.logo}
+          />
+        </View>
+        <View style={styles.row}>
+          <View style={styles.roomContainer}>
+            <Text>Living Room</Text>
+            <Slider
+              style={styles.slider}
+              minimumValue={0}
+              maximumValue={100}
+              value={brightnessValues.livingRoom}
+              onValueChange={(value) => updateBrightness('livingRoom', value)}
+            />
+          </View>
+
+          <View style={styles.roomContainer}>
+            <Text>Bed Room</Text>
+            <Slider
+              style={styles.slider}
+              minimumValue={0}
+              maximumValue={100}
+              value={brightnessValues.bedRoom}
+              onValueChange={(value) => updateBrightness('bedRoom', value)}
+            />
+          </View>
+        </View>
+
+        <View style={styles.row}>
+          <View style={styles.roomContainer}>
+            <Text>Kitchen</Text>
+            <Slider
+              style={styles.slider}
+              minimumValue={0}
+              maximumValue={100}
+              value={brightnessValues.kitchen}
+              onValueChange={(value) => updateBrightness('kitchen', value)}
+            />
+          </View>
+
+          <View style={styles.roomContainer}>
+            <Text>Work Room</Text>
+            <Slider
+              style={styles.slider}
+              minimumValue={0}
+              maximumValue={100}
+              value={brightnessValues.workRoom}
+              onValueChange={(value) => updateBrightness('workRoom', value)}
+            />
+          </View>
+        </View>
       </View>
-
-      {renderChart()}
-
-      <View style={styles.statsContainer}>
-        <Text style={styles.statsText}>
-          Lowest Consumption: {getLowestConsumption()}
-        </Text>
-        <Text style={styles.statsText}>
-          Highest Consumption: {getHighestConsumption()}
-        </Text>
-        <Text style={styles.statsText}>
-          Average Consumption: {getAverageConsumption()}
-        </Text>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:colors.blue1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: colors.blue1,
+    padding: 20,
   },
-  title: {
-    fontSize: 30,
-    color: "#000066",
-    fontWeight: "bold",
-    marginBottom: 30,
-    marginTop: -30,
+  slider: {
+    width: '80%',
+    height: 40,
   },
-  tabContainer: {
-    flexDirection: "row",
-    marginBottom: 30,
+  frame: {
+    flex: 1,
+    borderWidth: 10,
+    borderColor:  "white",
+    borderRadius: 10,
+    padding: 30,
+    justifyContent: 'center',
   },
-  tabItem: {
-    paddingHorizontal: 20,
-    paddingVertical: 9,
-    borderWidth: 3,
-    borderColor: "#000066",
-    borderRadius: 8,
-    marginRight: 10,
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 50,
   },
-  activeTabItem: {
-    backgroundColor: "#000066",
+  logo: {
+    width: 150,
+    height: 150,
   },
-  tabText: {
-    fontSize: 16,
+  row: {
+    flexDirection: 'row',
+    marginBottom: 40,
   },
-  activeTabText: {
-    color: "#FFF",
-  },
-  chart: {
-    marginVertical: 10,
+  roomContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 5,
+    borderColor:  "white",
+    marginHorizontal: 5,
+    padding: 10,
     borderRadius: 20,
-  },
-  statsContainer: {
-    marginTop: 30,
-    alignItems: "center",
-  },
-  statsText: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: "#000066",
+    backgroundColor: colors.blue1,
   },
 });
 

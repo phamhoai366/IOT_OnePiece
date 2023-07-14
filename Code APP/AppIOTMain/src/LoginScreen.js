@@ -1,43 +1,48 @@
-import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, Image, StyleSheet,SafeAreaView,Alert } from 'react-native';
+import React, { useState } from "react";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  Alert,
+} from "react-native";
 import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { colors, sizes } from "../theme";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Register from "./Register";
+import MainScreen from "./MainScreen";
 
+const Stack = createStackNavigator();
 
-const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function Login({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = () => {
     e = email;
     p = password;
-    console.log(e)
-    console.log(p)
+    console.log(e);
+    console.log(p);
     const auth = getAuth(FireBaseConfigAPP);
 
     signInWithEmailAndPassword(auth, e, p)
       .then((userCredential) => {
         console.log("Success");
         const user = userCredential.user;
-        Alert.alert(
-          "Đăng nhập thành công",
-          `Đăng nhập thành công ${email}`,
-          [
-            {
-              text: "Cancel",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "cancel",
-            },
-            { text: "OK", onPress: () => console.log("OK Pressed") },
-          ]
-        );
+        navigation.navigate("MainScreen");
       })
+      
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log("error");
       });
+
   };
 
   const handleGoogleLogin = () => {
@@ -54,10 +59,10 @@ const LoginScreen = () => {
 
   const handleRegister = () => {
     // Xử lý đăng ký
+    navigation.navigate("Register");
   };
 
   return (
-    
     <View style={styles.container}>
       <TextInput
         style={styles.input}
@@ -76,59 +81,85 @@ const LoginScreen = () => {
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       <View style={styles.forgotRegisterContainer}>
-        <TouchableOpacity style={styles.forgotPasswordButton} onPress={handleForgotPassword}>
+        <TouchableOpacity
+          style={styles.forgotPasswordButton}
+          onPress={handleForgotPassword}
+        >
           <Text style={styles.buttonText}>Forgot Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+        <TouchableOpacity
+          style={styles.registerButton}
+          onPress={handleRegister}
+        >
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
         <Image
           style={styles.googleIcon}
-          source={require('H:/Download/IOT_OnePiece/Code APP/AppIOTMain/assets/google.png')}
+          source={require("H:/Download/IOT_OnePiece/Code APP/AppIOTMain/assets/google.png")}
         />
         <Text style={styles.buttonText}>Login with Google</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.faceButton} onPress={handleFaceLogin}>
         <Image
           style={styles.faceIcon}
-          source={require('H:/Download/IOT_OnePiece/Code APP/AppIOTMain/assets/faceid.png')}
+          source={require("H:/Download/IOT_OnePiece/Code APP/AppIOTMain/assets/faceid.png")}
         />
         <Text style={styles.buttonText}>Login with Face ID</Text>
       </TouchableOpacity>
     </View>
+  );
+}
+
+const LoginScreen = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MainScreen"
+          component={MainScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Register" component={Register} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: colors.blue1,
   },
   input: {
-    width: '80%',
+    width: "80%",
     height: 50,
     borderRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     marginBottom: 20,
     paddingHorizontal: 10,
   },
   loginButton: {
-    width: '80%',
+    width: "80%",
     height: 50,
     borderRadius: 10,
-    backgroundColor: '#f4511e',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#f4511e",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 10,
   },
   forgotRegisterContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "80%",
     marginBottom: 10,
   },
   forgotPasswordButton: {
@@ -140,17 +171,17 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     //borderColor: '#f4511e',
     //borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   googleButton: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '80%',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "80%",
     height: 50,
     borderRadius: 10,
-    backgroundColor: '#dd4b39',
+    backgroundColor: "#dd4b39",
     marginBottom: 10,
   },
   googleIcon: {
@@ -159,13 +190,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   faceButton: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '80%',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "80%",
     height: 50,
     borderRadius: 10,
-    backgroundColor: '#4267B2',
+    backgroundColor: "#4267B2",
     marginBottom: 10,
   },
   faceIcon: {
@@ -175,7 +206,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: 'black',
+    color: "black",
   },
 });
 

@@ -11,7 +11,6 @@ import { Keyboard } from "react-native";
 const Tab = createBottomTabNavigator();
 
 const MainScreen = () => (
-  <NavigationContainer>
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
@@ -33,10 +32,10 @@ const MainScreen = () => (
     >
       <Tab.Screen name="Menu" component={Menu} options={{ headerShown: false }}/>
       <Tab.Screen name="Lập lịch" component={Menu} options={{ headerShown: false }}/>
-      <Tab.Screen name="Trợ lí ảo" component={Chatbot} options={{ headerShown: false }}/>
-      <Tab.Screen name="Setting" component={SettingScreen} options={{ headerShown: false }}/>
+      <Tab.Screen name="Trợ lí ảo" component={Chatbot} options={{ headerShown: true }}/>
+      <Tab.Screen name="Setting" component={SettingScreen} options={{ headerShown: true }}/>
     </Tab.Navigator>
-  </NavigationContainer>
+
 );
 
 export default MainScreen;

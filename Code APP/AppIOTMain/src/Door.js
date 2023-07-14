@@ -1,220 +1,126 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { LineChart, BarChart } from "react-native-chart-kit";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import Icons from "react-native-vector-icons/MaterialIcons";
 import { colors } from "../theme";
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
 const Door = () => {
-  const [activeTab, setActiveTab] = useState("day");
-  const data = {
-    day: {
-      labels: ["8AM", "10AM", "12PM", "2PM", "4PM", "6PM", "8PM"],
-      datasets: [
-        {
-          data: [0.5, 1, 1.5, 2, 1, 1, 0.5],
-        },
-      ],
-    },
-    week: {
-      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-      datasets: [
-        {
-          data: [6, 7, 5, 8, 6.5, 9, 10.5],
-        },
-      ],
-    },
-    year: {
-      labels: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
-      datasets: [
-        {
-          data: [120, 140, 135, 150, 145, 160, 155, 170, 165, 180, 175, 190],
-        },
-      ],
-    },
-  };
+  const [unlockMethod, setUnlockMethod] = useState("");
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
-  const getLowestConsumption = () => {
-    const lowestValue = Math.min(...data[activeTab].datasets[0].data);
-    return lowestValue;
-  };
-
-  const getHighestConsumption = () => {
-    const highestValue = Math.max(...data[activeTab].datasets[0].data);
-    return highestValue;
-  };
-
-  const getAverageConsumption = () => {
-    const averageValue =
-      data[activeTab].datasets[0].data.reduce((a, b) => a + b, 0) /
-      data[activeTab].datasets[0].data.length;
-    return averageValue.toFixed(2);
-  };
-
-  const renderChart = () => {
-    if (activeTab === "year") {
-      return (
-        <BarChart
-          data={data[activeTab]}
-          width={400}
-          height={400}
-          chartConfig={{
-            backgroundGradientFrom: "#DAFFFB",
-            backgroundGradientTo: "#C1ECE4",
-            color: (opacity = 1) => `rgba(10, 100, 255, ${opacity})`,
-            strokeWidth: 50,
-            barPercentage: 0.5, // Độ rộng của các cột chỉ chiếm 50% trên trục x
-            barRadius: 4, // Độ cong nhẹ của các cột
-          }}
-          style={styles.chart}
-        />
-      );
-    } else {
-      return (
-        <LineChart
-          data={data[activeTab]}
-          width={400}
-          height={400}
-          chartConfig={{
-            backgroundGradientFrom: "#DAFFFB",
-            backgroundGradientTo: "#C1ECE4",
-            color: (opacity = 1) => `rgba(10, 100, 255, ${opacity})`,
-            strokeWidth: 2,
-          }}
-          bezier
-          style={styles.chart}
-        />
-      );
-    }
+  const unlockDoor = (method) => {
+    setUnlockMethod(method);
+    // Thực hiện logic mở khóa dựa trên phương pháp đã chọn
+    console.log("Unlocking door using:", method);
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Statistics</Text>
-
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[styles.tabItem, activeTab === "day" && styles.activeTabItem]}
-          onPress={() => handleTabChange("day")}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "day" && styles.activeTabText,
-            ]}
-          >
-            Day
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tabItem, activeTab === "week" && styles.activeTabItem]}
-          onPress={() => handleTabChange("week")}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "week" && styles.activeTabText,
-            ]}
-          >
-            Week
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tabItem, activeTab === "year" && styles.activeTabItem]}
-          onPress={() => handleTabChange("year")}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "year" && styles.activeTabText,
-            ]}
-          >
-            Year
-          </Text>
-        </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.frame}>
+        <Text style={styles.title}>Smart Lock</Text>
+        <Image
+          source={require("../assets/device/doorknob.png")}
+          style={styles.logo}
+        />
+        <Text>Unlock Method: {unlockMethod}</Text>
+        <View style={styles.gridContainer}>
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => unlockDoor("Bluetooth")}
+            >
+              <Icon name="bluetooth" size={24} color="#000000" />
+              <Text style={styles.buttonText}>Bluetooth</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => unlockDoor("Remote Wifi")}
+            >
+              <Icon name="wifi" size={24} color="#000000" />
+              <Text style={styles.buttonText}>Wifi</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.row}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => unlockDoor("Face Recognition")}
+            >
+              <Icons name="face" size={24} color="#000000" />
+              <Text style={styles.buttonText}>Face Recognition</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => unlockDoor("History")}
+            >
+              <Icon name="time" size={24} color="#000000" />
+              <Text style={styles.buttonText}>Unlock History</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-
-      {renderChart()}
-
-      <View style={styles.statsContainer}>
-        <Text style={styles.statsText}>
-          Lowest Consumption: {getLowestConsumption()}
-        </Text>
-        <Text style={styles.statsText}>
-          Highest Consumption: {getHighestConsumption()}
-        </Text>
-        <Text style={styles.statsText}>
-          Average Consumption: {getAverageConsumption()}
-        </Text>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:colors.blue1,
-    alignItems: "center",
+    backgroundColor: "#fff",
+    padding: 20,
+  },
+  frame: {
+    flex: 1,
+    borderWidth: 10,
+    borderColor: "#ff8080",
+    borderRadius: 10,
+    padding: 30,
     justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     fontSize: 30,
-    color: "#000066",
     fontWeight: "bold",
-    marginBottom: 30,
-    marginTop: -30,
+    marginBottom: 20,
   },
-  tabContainer: {
+  logo: {
+    width: 150,
+    height: 150,
+    marginBottom: 20,
+  },
+  gridContainer: {
+    width: "100%",
+    marginTop: 40,
+  },
+  row: {
     flexDirection: "row",
-    marginBottom: 30,
+    justifyContent: "space-between",
   },
-  tabItem: {
-    paddingHorizontal: 20,
-    paddingVertical: 9,
-    borderWidth: 3,
-    borderColor: "#000066",
-    borderRadius: 8,
+  button: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#ffff",
+    borderWidth: 5,
+    borderColor: "#ff8080",
+
+    padding: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+    marginBottom: 20,
     marginRight: 10,
   },
-  activeTabItem: {
-    backgroundColor: "#000066",
-  },
-  tabText: {
+  buttonText: {
+    color: "#000000",
     fontSize: 16,
-  },
-  activeTabText: {
-    color: "#FFF",
-  },
-  chart: {
-    marginVertical: 10,
-    borderRadius: 20,
-  },
-  statsContainer: {
-    marginTop: 30,
-    alignItems: "center",
-  },
-  statsText: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: "#000066",
+    fontWeight: "bold",
+    marginTop: 10,
   },
 });
 

@@ -9,6 +9,7 @@ const colors = {
   background4:'#8CC0DE',
   button: '#ECF2FF',
   text: '#03001C',
+  logo:'#57C5B6'
 };
 
 const sizes = {
