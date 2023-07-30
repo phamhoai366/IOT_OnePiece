@@ -1,29 +1,43 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, Switch, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const NotificationScreen = () => {
-  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+  const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
+  //const navigation = useNavigation();
 
   const toggleNotification = () => {
-    setIsNotificationVisible(!isNotificationVisible);
+    setIsNotificationEnabled(!isNotificationEnabled);
+  };
+
+  const handleGoBack = () => {
+    // Quay lại màn hình trước đó
+    //navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={toggleNotification}>
-        <Text>Hiển thị thông báo</Text>
+      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+        <Ionicons name="arrow-back" size={24} color="blue" />
       </TouchableOpacity>
+      <Text style={styles.title}>Quản lý thông báo</Text>
+      
+      <View style={styles.notificationContainer}>
+        <Text style={styles.notificationLabel}>Thông báo</Text>
+        <Switch
+          value={isNotificationEnabled}
+          onValueChange={toggleNotification}
+        />
+      </View>
 
-      <Modal visible={isNotificationVisible} animationType="fade" transparent>
-        <View style={styles.modalContainer}>
-          <View style={styles.notificationContainer}>
-            <Text style={styles.notificationText}>Thông báo của bạn</Text>
-            <TouchableOpacity onPress={toggleNotification}>
-              <Text style={styles.closeButton}>Đóng</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      {isNotificationEnabled ? (
+        <Text style={styles.notificationMessage}>
+          Bật thông báo để nhận các cảnh báo và tin tức mới nhất về hệ thống Smart Home của bạn.
+        </Text>
+      ) : (
+        <Text style={styles.notificationMessage}>Thông báo đã được tắt.</Text>
+      )}
     </View>
   );
 };
@@ -31,29 +45,33 @@ const NotificationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
   notificationContainer: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  notificationText: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
-  closeButton: {
-    color: 'blue',
-    marginTop: 10,
+  notificationLabel: {
+    marginRight: 10,
+    fontSize: 18,
+  },
+  notificationMessage: {
+    fontSize: 16,
+    textAlign: "center",
+    paddingHorizontal: 20,
+  },
+  backButton: {
+    position: "absolute",
+    top: 20,
+    left: 10,
   },
 });
 

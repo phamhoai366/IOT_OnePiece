@@ -32,6 +32,7 @@ import WeatherCard from "./WeatherCard";
 import Swiper from "react-native-swiper";
 import { useNavigation } from "@react-navigation/native";
 import BLE from "./BLE";
+
 const Stack = createStackNavigator();
 
 function Home({ navigation }) {
@@ -132,7 +133,7 @@ const Menu = () => {
 
   useEffect(() => {
     const db = getDatabase(FireBaseConfigAPP);
-    const starCountRef = ref(db, "DiaChiNhaHoai/Room1/");
+    const starCountRef = ref(db, "Nha_A/Room1/");
     onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
       setGas(data.Gas);
