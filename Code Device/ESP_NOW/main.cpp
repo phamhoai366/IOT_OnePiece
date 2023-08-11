@@ -11,13 +11,14 @@
 #endif
 
 #include <espnow.h>
-#include <Servo.h>
+#include "DHT.h"
 
 #define ledR D1
 #define ledY D2
 #define Motion D4
-#define SERVO_PIN D3
-
+#define DHTPIN D5   // Pin D5
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
 
 // Define variables to store DHT readings to be sent
 float temperature;
@@ -25,17 +26,12 @@ float humidity;
 int gasSensorAnalog;
 int isMotion;
 
-Servo myservo1;
-int pos = 0;
-  
-
 // Define variables to store incoming readings
 float incomingTemp;
 float incomingHum;
 int incomingGas;
 int incomingLed;
 int incomingLed3;
-int incomingDoor3;
 
 // Variable to store if sending data was successful
 String success;
@@ -87,9 +83,21 @@ void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len) {
   incomingGas = incomingReadings.gas;
   incomingLed = incomingReadings.led2;
   incomingLed3 = incomingReadings.led3;
-  incomingDoor3 = incomingReadings.door3;
 }
 
+void getReadDht(){
+  temperature = dht.readTemperature();
+  if (isnan(temperature)){
+    Serial.println("Failed to read temperature from dht");
+    temperature = 0.0;
+  }
+
+  humidity = dht.readHumidity();
+  if (isnan(humidity)){
+    Serial.println("Failed to read humidity from DHT");
+    humidity = 0.0;
+  }
+}
 
 void printIncomingReadings(){
   // Display Readings in Serial Monitor
@@ -106,16 +114,15 @@ void printIncomingReadings(){
   Serial.println(incomingLed);
   Serial.print("Led3: ");
   Serial.println(incomingLed3);
-  Serial.print("Door: ");
-  Serial.println(incomingDoor3); 
 }
 
 void setup() {
   // Init Serial Monitor
   Serial.begin(115200);
 
-  myservo1.attach(SERVO_PIN);
-  
+  // Init DHT sensor
+  dht.begin();
+
   pinMode(Motion, INPUT);
   pinMode(ledR, OUTPUT); 
   pinMode(ledY, OUTPUT);
@@ -145,6 +152,7 @@ void loop() {
   if ((millis() - lastTime) > timerDelay) {
     
     // Set values to send
+    getReadDht();
     isMotion = digitalRead(Motion);
 
     //set values to send
@@ -159,7 +167,8 @@ void loop() {
     // Print incoming readings
     printIncomingReadings();
 
-    analogWrite(ledY, 255 - incomingLed3);     //if la esp8266 to
+    analogWrite(ledY, 255 - incomingLed);
+    // analogWrite(ledY, 255 - incomingLed3);     //if la esp8266 to
 
     // increase the LED brightness
     if (incomingGas >= 100){
@@ -167,14 +176,6 @@ void loop() {
       // changing the LED brightness with PWM
         analogWrite(ledR, dutyCycle);    
       }
-    }
-
-    if (incomingDoor3 == 1){
-        myservo1.write(180);
-    }
-
-    if (incomingDoor3 == 0){
-      myservo1.write(0);
     }
 
     lastTime = millis();
