@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet,StatusBar } from "react-native";
 
 const HistoryScreen = () => {
   const [history, setHistory] = useState([
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ffffff",
+    marginTop: StatusBar.currentHeight || 0,
   },
   title: {
     fontSize: 24,

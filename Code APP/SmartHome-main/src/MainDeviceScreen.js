@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  StatusBar
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -17,6 +18,7 @@ import Swiper from "react-native-swiper";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import { reverseGeocodeAsync } from "expo-location";
+
 // Import screens from separate code.js files
 import Chatbot from "../src/ChatbotScreen";
 import History from "../src/HistoryScreen";
@@ -29,10 +31,15 @@ import DoorScreen from "../src/DoorScreen";
 import ElectricityScreen from "../src/ElectricityScreen";
 import AirQualityScreen from "../src/AirQualityScreen";
 import CameraScreen from "../src/CameraScreen";
+import WeatherCard from "./WeatherCard";
+import axios from 'axios';
+//import { API_KEY } from 'react-native-dotenv';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+const API_KEY="dc21b0d642811c70dfd343865abd69a4"
+let url=`http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=${API_KEY}`
 const MainDeviceScreen = () => {
   const [temperature, setTemperature] = useState(0);
   const [humidity, setHumidity] = useState(0);
@@ -77,27 +84,27 @@ const MainDeviceScreen = () => {
       <Tab.Screen
         name="MainDevice"
         component={Device}
-        options={{ tabBarLabel: "MainDevice" }}
+        options={{ tabBarLabel: "MainDevice" ,headerShown: false }}
       />
       <Tab.Screen
         name="Chatbot"
         component={Chatbot}
-        options={{ tabBarLabel: "Chatbot" }}
+        options={{ tabBarLabel: "Chatbot" ,headerShown: false}}
       />
       <Tab.Screen
         name="History"
         component={History}
-        options={{ tabBarLabel: "History" }}
+        options={{ tabBarLabel: "History",headerShown: false  }}
       />
       <Tab.Screen
         name="Notification"
         component={Notification}
-        options={{ tabBarLabel: "Notifications" }}
+        options={{ tabBarLabel: "Notifications",headerShown: false  }}
       />
       <Tab.Screen
         name="Settings"
         component={Settings}
-        options={{ tabBarLabel: "Settings" }}
+        options={{ tabBarLabel: "Settings",headerShown: false  }}
       />
     </Tab.Navigator>
   );
@@ -108,37 +115,37 @@ const Device = () => {
       <Stack.Screen
         name="Main"
         component={MainTab}
-        options={{ headerShown: false }}
+        options={{ headerShown: false ,headerShown: false }}
       />
       <Stack.Screen
         name="LightScreen"
         component={LightScreen}
-        options={{ title: "Light" }}
+        options={{ title: "Light",headerShown: false }}
       />
       <Stack.Screen
         name="TemperatureScreen"
         component={TemperatureScreen}
-        options={{ title: "Temperature" }}
+        options={{ title: "Temperature",headerShown: false  }}
       />
       <Stack.Screen
         name="DoorScreen"
         component={DoorScreen}
-        options={{ title: "Door" }}
+        options={{ title: "Door",headerShown: false  }}
       />
       <Stack.Screen
         name="ElectricityScreen"
         component={ElectricityScreen}
-        options={{ title: "Electricity" }}
+        options={{ title: "Electricity",headerShown: false  }}
       />
       <Stack.Screen
         name="AirQualityScreen"
         component={AirQualityScreen}
-        options={{ title: "Air" }}
+        options={{ title: "Air",headerShown: false  }}
       />
       <Stack.Screen
         name="CameraScreen"
         component={CameraScreen}
-        options={{ title: "Check camera" }}
+        options={{ title: "Check camera",headerShown: false  }}
       />
     </Stack.Navigator>
   );
@@ -193,24 +200,7 @@ const MainTab = ({ navigation }) => {
 */
 
   const handleTemperatureButtonPress = () => {
-    if (temperature === 0) {
-      // Set temperature value initially
-      const randomTemp = Math.floor(Math.random() * 101) - 50;
-      setTemperature(randomTemp);
-    }
-
-    // Toggle temperature updates
-    setInterval(() => {
-      setTemperature((prevTemperature) => {
-        // Generate a new random temperature between -5 to 40
-        let randomTemp = prevTemperature + Math.floor(Math.random() * 46) - 5; // Randomly change the temperature by -5 to 5
-
-        // Limit the temperature within -5 to 40 range
-        randomTemp = Math.max(-5, Math.min(40, randomTemp));
-
-        return randomTemp;
-      });
-    }, 3000); // Update temperature every 5 seconds
+    navigation.navigate("TemperatureScreen");
   };
 
   const handleHumidityButtonPress = () => {
@@ -271,66 +261,33 @@ const MainTab = ({ navigation }) => {
   return (
     <View style={styles.contentContainer}>
       <View style={styles.content}>
-        <Swiper loop={false} style={styles.swiperContainer}>
-          <View style={styles.temperatureContainer}>
-            <View style={styles.header}>
-              <Image
-                source={require("../assets/logo.jpg")}
-                style={styles.logo}
-              />
-              <Text style={styles.wellcome}>Wellcome to IOT SmartHome!!!</Text>
-            </View>
-            <Text style={{ fontSize: 16 }}>{address}</Text>
-            <Text>{date}</Text>
-            <Text style={styles.temperatureText}>{temperature}°C</Text>
-            {temperature > 30 && (
-              <Icon name="weather-sunny" size={50} color={colors.primary} />
-            )}
-            {temperature <= 30 && temperature >= 20 && (
-              <Icon name="weather-cloudy" size={50} color={colors.primary} />
-            )}
-            {temperature < 20 && (
-              <Icon name="weather-rainy" size={50} color={colors.primary} />
-            )}
-            <Text style={styles.weatherConditionText}>{weatherText}</Text>
-          </View>
-          <View style={styles.humidityContainer}>
-            <View style={styles.header}>
-              <Image
-                source={require("../assets/logo.jpg")}
-                style={styles.logo}
-              />
-              <Text style={styles.wellcome}>Wellcome to IOT SmartHome!!!</Text>
-            </View>
-            <Text style={{ fontSize: 16 }}>{address}</Text>
-            <Text>{date}</Text>
-            <Text style={styles.humidityText}>{humidity}%</Text>
-            <Icon name="water-outline" size={50} color={colors.primary} />
-          </View>
+        <Swiper  loop={true} autoplay={true} autoplayTimeout={5} dotColor="white">
+          <WeatherCard/>
+          <WeatherCard/>
         </Swiper>
       </View>
       <Text style={styles.deviceText}>Device</Text>
-      <ScrollView style={styles.scrollView}>
+      <View style={styles.scrollView}>
         <View style={styles.square}>
           <TouchableOpacity
             style={styles.device}
             onPress={handleLightButtonPress}
           >
-            <Icon name="lightbulb-on" size={50} color={colors.primary} />
+            <Icon name="lightbulb-on" size={40} color={colors.primary} />
             <Text style={styles.text}>Đèn</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.device}
             onPress={handleTemperatureButtonPress}
           >
-            <Icon name="thermometer" size={50} color={colors.primary} />
+            <Icon name="thermometer" size={40} color={colors.primary} />
             <Text style={styles.text}>Nhiệt độ</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.device}
             onPress={handleDoorButtonPress}
           >
-            <Icon name="door-open" size={50} color={colors.primary} />
+            <Icon name="door-open" size={40} color={colors.primary} />
             <Text style={styles.text}>Đóng/mở cửa</Text>
           </TouchableOpacity>
         </View>
@@ -341,7 +298,7 @@ const MainTab = ({ navigation }) => {
             style={styles.device}
             onPress={handleHumidityButtonPress}
           >
-            <Icon name="water-outline" size={50} color={colors.primary} />
+            <Icon name="water-outline" size={40} color={colors.primary} />
             <Text style={styles.text}>Độ ẩm</Text>
           </TouchableOpacity>
           {/* Nút Khí gas */}
@@ -349,14 +306,14 @@ const MainTab = ({ navigation }) => {
             style={styles.device}
             onPress={handleGasButtonPress}
           >
-            <Icon name="gas-cylinder" size={50} color={colors.primary} />
+            <Icon name="gas-cylinder" size={40} color={colors.primary} />
             <Text style={styles.text}>Khí gas</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.device}
             onPress={handleAirQualityButtonPress}
           >
-            <Icon name="air-filter" size={50} color={colors.primary} />
+            <Icon name="air-filter" size={40} color={colors.primary} />
             <Text style={styles.text}>Chất lượng không khí</Text>
           </TouchableOpacity>
         </View>
@@ -366,14 +323,14 @@ const MainTab = ({ navigation }) => {
             style={styles.device}
             onPress={handleElectricityButtonPress}
           >
-            <Icon name="solar-power" size={50} color={colors.primary} />
-            <Text style={styles.text}>Lượng điện sử dụng</Text>
+            <Icon name="solar-power" size={40} color={colors.primary} />
+            <Text style={styles.text}>Tiêu thụ điện</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.device}
             onPress={handleCameraButtonPress}
           >
-            <Icon name="video" size={50} color={colors.primary} />
+            <Icon name="video" size={40} color={colors.primary} />
             <Text style={styles.text}>Check camera</Text>
           </TouchableOpacity>
           {/* Nút Thêm thiết bị */}
@@ -381,11 +338,11 @@ const MainTab = ({ navigation }) => {
             style={styles.device}
             onPress={handleAddDeviceButtonPress}
           >
-            <Icon name="plus" size={50} color={colors.primary} />
+            <Icon name="plus" size={40} color={colors.primary} />
             <Text style={styles.text}>Thêm thiết bị</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -393,24 +350,7 @@ const MainTab = ({ navigation }) => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    margin: 5,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 15,
-    paddingTop: 10,
-    marginTop: -55,
-    marginRight: 30,
-  },
-  logo: {
-    width: 60,
-    height: 60,
-    borderRadius: 50,
-    backgroundColor: "#ff8080",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 10,
+    marginTop: StatusBar.currentHeight || 0,
   },
   wellcome: {
     fontSize: 22,
@@ -418,34 +358,33 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
   content: {
-    flex: 0.7,
+    flex: 5,
   },
-
   square: {
     margin: 10,
     flexDirection: "row",
     justifyContent: "space-between",
-    height: "16%",
+    height: "22%",
     alignItems: "center",
   },
   squareBottom: {
     marginTop: 10,
   },
   device: {
-    backgroundColor: colors.white,
+    //backgroundColor: colors.white,
     height: "100%",
-    margin: 7,
-    borderColor: "#800000",
-    borderWidth: 2,
-    borderRadius: 10,
+    margin: 5,
+    borderColor: "#3360ff",
+    borderWidth: 3,
+    borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
     width: "30%",
     marginTop: 100,
   },
   scrollView: {
-    flex: 1,
-    marginTop: -30,
+    flex: 10,
+    backgroundColor:"#f8fbff"
   },
   text: {
     marginTop: 10,
@@ -453,35 +392,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
-  swiperContainer: {
-    height: "100%",
-    backgroundColor: "#ffcccc",
-  },
-  temperatureContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ffcccc",
-  },
-  humidityContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ffcccc",
-  },
-  temperatureText: {
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-  humidityText: {
-    fontSize: 30,
-    fontWeight: "bold",
-  },
   deviceText: {
     marginTop: 10,
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "bold",
     textAlign: "center",
+    backgroundColor:"#f8fbff"
   },
 });
 

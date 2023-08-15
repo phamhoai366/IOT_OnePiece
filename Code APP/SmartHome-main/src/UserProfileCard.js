@@ -15,7 +15,7 @@ const UserProfileCard = ({ name, email }) => {
   return (
     <View style={styles.container}>
       <View style={styles.userIcon}>
-        <Image source={require("../assets/logo.jpg")} style={styles.logo} />
+        <Image source={require("../assets/device/user.png")} style={styles.logo} />
       </View>
       <View style={styles.userInfo}>
         <Text style={styles.userName}>Nguyen Kim Anh</Text>
@@ -31,11 +31,12 @@ const UserProfileCard = ({ name, email }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: '#ffcccc',
+    backgroundColor: '#f8fbff',
     height: 200,
-    borderRadius: 20,
-    elevation: 10,
+    borderRadius: 10,
+    elevation: 5,
     flexDirection: "row",
+    marginTop:10
   },
   userInfo: {
     flex: 1,
@@ -52,11 +53,9 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   userIcon: {
-    width: 100,
-    height: 100,
+  
     margin: 10,
-    borderRadius: 50,
-    backgroundColor: '#ff9999',
+
     justifyContent: "center",
     alignItems: "center",
   },

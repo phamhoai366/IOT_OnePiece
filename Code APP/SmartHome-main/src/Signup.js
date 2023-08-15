@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity,Alert } from 'react-native';
 import smart from '../assets/smart.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+
 const SignUpScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -24,33 +28,33 @@ const SignUpScreen = ({ navigation }) => {
     setPhoneNumber(phoneNumber);
   };
 
-  const handleSignUpPress = async () => {
-    try {
-      const response = await fetch('http://192.168.1.117:3000/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          phoneNumber
-        }),
+  const handleSignUpPress =  () => {
+    e = email;
+    p = password;
+    console.log(e, p);
+    const auth = getAuth(FireBaseConfigAPP);
+    createUserWithEmailAndPassword(auth, e, p)
+      .then((userCredential) => {
+        console.log("Success");
+        const user = userCredential.user;
+        Alert.alert(
+          "Đăng ký thành công",
+          `Đăng ký thành công ${email}`,
+          [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel",
+            },
+            { text: "OK", onPress: () => navigation.navigate('MainDeviceScreen') },
+          ]
+        );
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
       });
-
-      if (response.ok) {
-        console.log('Signup successful');
-        await AsyncStorage.setItem('email', email);
-        await AsyncStorage.setItem('password', password);
-        // Navigate to the login screen
-        navigation.navigate('LoginScreen');
-      } else {
-        console.error('Failed to signup');
-      }
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const handleSignInPress = () => {
@@ -104,7 +108,7 @@ const SignUpScreen = ({ navigation }) => {
         />
       </View>
       <TouchableOpacity style={styles.buttonContainer} onPress={handleSignUpPress}>
-        <Text style={styles.buttonText}>Sign up!</Text>
+        <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleSignInPress}>
         <Text style={styles.signIn}>Already have an account? Sign in!</Text>
@@ -117,36 +121,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#ff9999',
-    padding: 5,
+    paddingLeft: 30,
+    paddingRight: 30,
+    paddingTop: 30,
   },
   logo: {
     width: 150,
     height: 150,
-    marginTop: -10,
-   
+    marginTop:20,
   },
   header: {
     fontSize: 40,
-    color: '#202060',
     marginBottom: 30,
     fontWeight: 'bold',
-    //textTransform: 'uppercase',
   },
   inputContainer: {
-    width: '90%',
+    width: '100%',
     marginBottom: 15,
   },
   inputLabel: {
     fontWeight: '600',
-    color: '#202060',
+    //color: '#202060',
     marginBottom: 5,
   },
   input: {
     width: '100%',
     height: 40,
     paddingHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: 10,
     backgroundColor: '#f0f0f0',
     borderWidth: 1,
     borderColor: '#ddd',
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
   signIn: {
     color: '#0000b3',
     marginTop: 3,
-    textDecorationLine: 'underline',
+    marginTop: 10,
   },
 });
 

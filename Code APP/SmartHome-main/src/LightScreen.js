@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  StatusBar
 } from "react-native";
 import Slider from "@react-native-community/slider";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -112,8 +113,9 @@ const Led = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffff",
+    backgroundColor: "#ccdeff",
     padding: 20,
+    marginTop: StatusBar.currentHeight || 0,
   },
   slider: {
     width: "80%",
@@ -121,9 +123,9 @@ const styles = StyleSheet.create({
   },
   frame: {
     flex: 1,
-    borderWidth: 3,
-    borderColor: "#ff8080",
-    borderRadius: 10,
+    //borderWidth: 5,
+    //borderColor: "#3360ff",
+    //borderRadius: 10,
     padding: 30,
     marginTop: -20,
     justifyContent: "center",
@@ -155,7 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 5,
-    borderColor: "#ff8080",
+    borderColor: "#3360ff",
     marginHorizontal: 5,
     padding: 10,
     borderRadius: 20,

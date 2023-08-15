@@ -1,5 +1,0 @@
-0 Fire
-1 Hiếu
-2 Human LEGO
-3 Car
-4 NoClass

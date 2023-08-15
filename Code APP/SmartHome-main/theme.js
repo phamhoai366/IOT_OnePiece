@@ -1,11 +1,11 @@
 const colors = {
-  background3: '#FA754C',
+  background3: '#89d6fb',
   black: '#292934',
   white: '#FFFFFF',
-  background2: '#A7A7A7',
-  background4: '#ECEDEF',
-  button: '#F4F5F7',
-  primary:'#ff6666',
+  background2: '#d4f0fc',
+  background4: '#02a9f7',
+  button: '#01303f',
+  primary:'#5c79ff',
 };
 
 const sizes = {

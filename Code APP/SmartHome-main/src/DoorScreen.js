@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image,StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/MaterialIcons';
+import IconsEntypo from 'react-native-vector-icons/Entypo';
+//import {authenticateAsync} from 'expo-local-authentication'
+
+
+
 const App = () => {
   const [unlockMethod, setUnlockMethod] = useState('');
 
@@ -20,21 +25,21 @@ const App = () => {
         <View style={styles.gridContainer}>
           <View style={styles.row}>
             <TouchableOpacity style={styles.button} onPress={() => unlockDoor('Bluetooth')}>
-              <Icon name="bluetooth" size={24} color="#000000" />
+              <Icon name="bluetooth" size={30} color="#000000" />
               <Text style={styles.buttonText}>Bluetooth</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => unlockDoor('Remote Wifi')}>
-              <Icon name="wifi" size={24} color="#000000" />
-              <Text style={styles.buttonText}>Wifi</Text>
+              <IconsEntypo name="fingerprint" size={30} color="#000000" />
+              <Text style={styles.buttonText}>Fingerprint</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.row}>
             <TouchableOpacity style={styles.button} onPress={() => unlockDoor('Face Recognition')}>
-              <Icons name="face" size={24} color="#000000" />
+              <Icons name="face" size={30} color="#000000" />
               <Text style={styles.buttonText}>Face Recognition</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => unlockDoor('History')}>
-              <Icon name="time" size={24} color="#000000" />
+              <Icon name="time" size={30} color="#000000" />
               <Text style={styles.buttonText}>Unlock History</Text>
             </TouchableOpacity>
           </View>
@@ -42,19 +47,18 @@ const App = () => {
       </View>
     </SafeAreaView>
   );
+
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#9ec9ff',
     padding: 20,
+    marginTop: StatusBar.currentHeight || 0,
   },
   frame: {
     flex: 1,
-    borderWidth: 3,
-    borderColor: '#ff8080',
-    borderRadius: 10,
     padding: 30,
     justifyContent: 'center',
     alignItems: 'center',
@@ -82,10 +86,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    //justifyContent:"center",
     backgroundColor: '#ffff',
     borderWidth: 5,
-    borderColor: '#ff8080',
-    
+    borderColor: '#3360ff',
     padding: 10,
     paddingVertical: 12,
     paddingHorizontal: 16,

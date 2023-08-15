@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Switch, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Switch, StyleSheet, TouchableOpacity,StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ffffff",
+    marginTop: StatusBar.currentHeight || 0,
   },
   title: {
     fontSize: 24,

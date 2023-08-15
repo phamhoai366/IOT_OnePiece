@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors } from "../theme";
 
 // Import screens from separate code.js files
@@ -32,15 +32,43 @@ const MainDevice = () => {
   };
 
   return (
-      <Stack.Navigator initialRouteName="Main">
-        <Stack.Screen name="Main" component={MainTab} options={{ headerShown: false }} />
-        <Stack.Screen name="LightScreen" component={LightScreen} options={{ title: 'Light' }} />
-        <Stack.Screen name="TemperatureScreen" component={TemperatureScreen} options={{ title: 'Temperature' }} />
-        <Stack.Screen name="DoorScreen" component={DoorScreen} options={{ title: 'Door' }} />
-        <Stack.Screen name="ElectricityScreen" component={ElectricityScreen} options={{ title: 'Electricity' }} />
-        <Stack.Screen name="AirQualityScreen" component={AirQualityScreen} options={{ title: 'Air' }} />
-        <Stack.Screen name="CameraScreen" component={CameraScreen} options={{ title: 'Check camera' }} />
-      </Stack.Navigator>
+    <Stack.Navigator initialRouteName="Main">
+      <Stack.Screen
+        name="Main"
+        component={MainTab}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="LightScreen"
+        component={LightScreen}
+        options={{ title: "Light" }}
+      />
+      <Stack.Screen
+        name="TemperatureScreen"
+        component={TemperatureScreen}
+        options={{ title: "Temperature" }}
+      />
+      <Stack.Screen
+        name="DoorScreen"
+        component={DoorScreen}
+        options={{ title: "Door" }}
+      />
+      <Stack.Screen
+        name="ElectricityScreen"
+        component={ElectricityScreen}
+        options={{ title: "Electricity" }}
+      />
+      <Stack.Screen
+        name="AirQualityScreen"
+        component={AirQualityScreen}
+        options={{ title: "Air" }}
+      />
+      <Stack.Screen
+        name="CameraScreen"
+        component={CameraScreen}
+        options={{ title: "Check camera" }}
+      />
+    </Stack.Navigator>
   );
 };
 
@@ -48,27 +76,27 @@ const MainTab = ({ navigation }) => {
   const [temperature, setTemperature] = useState(0);
 
   const handleLightButtonPress = () => {
-    navigation.navigate('LightScreen');
+    navigation.navigate("LightScreen");
   };
 
   const handleTemperatureButtonPress = () => {
-    navigation.navigate('TemperatureScreen');
+    navigation.navigate("TemperatureScreen");
   };
 
   const handleDoorButtonPress = () => {
-    navigation.navigate('DoorScreen');
+    navigation.navigate("DoorScreen");
   };
 
   const handleElectricityButtonPress = () => {
-    navigation.navigate('ElectricityScreen');
+    navigation.navigate("ElectricityScreen");
   };
 
   const handleAirQualityButtonPress = () => {
-    navigation.navigate('AirQualityScreen');
+    navigation.navigate("AirQualityScreen");
   };
 
   const handleCameraButtonPress = () => {
-    navigation.navigate('CameraScreen');
+    navigation.navigate("CameraScreen");
   };
 
   return (
@@ -79,11 +107,17 @@ const MainTab = ({ navigation }) => {
       </View>
       <Text style={styles.temperatureText}>Device</Text>
       <View style={styles.square}>
-        <TouchableOpacity style={styles.device} onPress={handleLightButtonPress}>
+        <TouchableOpacity
+          style={styles.device}
+          onPress={handleLightButtonPress}
+        >
           <Icon name="lightbulb-on" size={50} color={colors.primary} />
           <Text style={styles.text}>Đèn</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.device} onPress={handleTemperatureButtonPress}>
+        <TouchableOpacity
+          style={styles.device}
+          onPress={handleTemperatureButtonPress}
+        >
           <Icon name="thermometer" size={50} color={colors.primary} />
           <Text style={styles.text}>Nhiệt độ</Text>
         </TouchableOpacity>
@@ -94,15 +128,24 @@ const MainTab = ({ navigation }) => {
       </View>
 
       <View style={[styles.square, styles.squareBottom]}>
-        <TouchableOpacity style={styles.device} onPress={handleElectricityButtonPress}>
+        <TouchableOpacity
+          style={styles.device}
+          onPress={handleElectricityButtonPress}
+        >
           <Icon name="solar-power" size={50} color={colors.primary} />
           <Text style={styles.text}>Lượng điện sử dụng</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.device} onPress={handleCameraButtonPress}>
+        <TouchableOpacity
+          style={styles.device}
+          onPress={handleCameraButtonPress}
+        >
           <Icon name="video" size={50} color={colors.primary} />
           <Text style={styles.text}>Check camera</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.device} onPress={handleAirQualityButtonPress}>
+        <TouchableOpacity
+          style={styles.device}
+          onPress={handleAirQualityButtonPress}
+        >
           <Icon name="air-filter" size={50} color={colors.primary} />
           <Text style={styles.text}>Chất lượng không khí</Text>
         </TouchableOpacity>
@@ -148,7 +191,7 @@ const styles = StyleSheet.create({
     height: "33.33%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#ffcccc',
+    backgroundColor: "#ffcccc",
   },
   temperatureText: {
     fontSize: 30,

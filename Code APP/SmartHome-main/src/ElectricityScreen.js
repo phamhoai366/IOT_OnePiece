@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity,StatusBar} from 'react-native';
 import { LineChart, BarChart } from 'react-native-chart-kit';
 
 const StatisticsScreen = () => {
@@ -57,15 +57,16 @@ const StatisticsScreen = () => {
       return (
         <BarChart
           data={data[activeTab]}
-          width={400}
-          height={400}
+          width={360}
+          height={360}
           chartConfig={{
-            backgroundGradientFrom: '#FFFFFF',
-            backgroundGradientTo: '#ff9999',
-            color: (opacity = 1) => `rgba(0, 0, 102, ${opacity})`,
-            strokeWidth: 50,
-            barPercentage: 0.5, // Độ rộng của các cột chỉ chiếm 50% trên trục x
+            backgroundGradientFrom: '#ccdeff',
+            backgroundGradientTo: '#ccdeff',
+            color: (opacity = 255) => `rgba(51, 96, 255, ${opacity})`,
+            strokeWidth: 2,
+            barPercentage: 0.35, // Độ rộng của các cột chỉ chiếm 50% trên trục x
             barRadius: 4, // Độ cong nhẹ của các cột
+            //backgroundColor:"#f8fbff"
           }}
           style={styles.chart}
         />
@@ -74,12 +75,12 @@ const StatisticsScreen = () => {
       return (
         <LineChart
           data={data[activeTab]}
-          width={400}
-          height={400}
+          width={360}
+          height={360}
           chartConfig={{
-            backgroundGradientFrom: '#FFFFFF',
-            backgroundGradientTo: '#ff9999',
-            color: (opacity = 1) => `rgba(0, 0, 102, ${opacity})`,
+            backgroundGradientFrom: '#ccdeff',
+            backgroundGradientTo: '#ccdeff',
+            color: (opacity = 255) => `rgba(51, 96, 255, ${opacity})`,
             strokeWidth: 2,
           }}
           bezier
@@ -127,13 +128,12 @@ const StatisticsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:  '#ffff',
-    borderColor: '#ffb3b3',
-    borderWidth: 3, 
-    borderRadius: 10,
+    backgroundColor:  '#f8fbff',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 30,
+    //margin: 20,
+    marginTop: StatusBar.currentHeight || 0,
   },
   title: {
     fontSize: 30,
@@ -141,22 +141,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: -5,
     marginTop:-10
-    
   },
   tabContainer: {
     flexDirection: 'row',
-    marginBottom: 30,
+    margin: 20,
   },
   tabItem: {
     paddingHorizontal: 20,
     paddingVertical: 9,
     borderWidth: 3,
-    borderColor: '#000066',
+    borderColor: '#5c79ff',
     borderRadius: 8,
     marginRight: 10,
   },
   activeTabItem: {
-    backgroundColor: '#000066',
+    backgroundColor: '#5c79ff',
   },
   tabText: {
     fontSize: 16,
@@ -165,17 +164,17 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   chart: {
-    marginVertical: 10,
-    borderRadius: 20,
+    marginVertical: 5,
+    borderRadius: 10,
   },
   statsContainer: {
     marginTop: 30,
     alignItems: 'center',
   },
   statsText: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 10,
-    color: '#000066',
+    //color: '#000066',
   },
 });
 
