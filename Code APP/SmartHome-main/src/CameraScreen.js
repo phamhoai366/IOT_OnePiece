@@ -1,44 +1,12 @@
-import React,{useState,useEffect} from 'react';
-import { View, StyleSheet, Text, Image ,StatusBar} from 'react-native';
-import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
-import {getStorage, ref, getDownloadURL } from'firebase/storage';
+import * as React from 'react';
+import { View,StatusBar } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 
-export default function CameraScreen() {
-  const [imageUrl, setImageUrl] = useState('');
-
-  useEffect(() => {
-    const storageRef = getStorage(FireBaseConfigAPP)
-    //const imageRef =ref(storageRef, 'images/2.jpg');
-    getDownloadURL(ref(storageRef, 'images/2.jpg'))
-    .then((url) => {
-     console.log(url)
-     setImageUrl(url)
-    })
-    .catch((error) => {
-      console.log(error)
-    });
-  }, []);
-
+export default function App() {
   return (
-    <View style={styles.container}>
-    <Image source={{ uri: imageUrl }} style={styles.img} />
+    <View style={{ flex: 1, marginTop: StatusBar.currentHeight || 0, }}>
+      <WebView source={{ uri: 'http://10.90.98.160:4747/video' }} />
     </View>
   );
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  img:{
-    width: 350, 
-    height: 400,
-    borderWidth:2,
-    borderRadius:10
-  }
-});
