@@ -19,6 +19,7 @@ import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import { reverseGeocodeAsync } from "expo-location";
 
+
 // Import screens from separate code.js files
 import Chatbot from "../src/ChatbotScreen";
 import History from "../src/HistoryScreen";
@@ -32,8 +33,9 @@ import ElectricityScreen from "../src/ElectricityScreen";
 import AirQualityScreen from "../src/AirQualityScreen";
 import CameraScreen from "../src/CameraScreen";
 import WeatherCard from "./WeatherCard";
-import axios from 'axios';
-//import { API_KEY } from 'react-native-dotenv';
+import Humidity from "./Humidity"
+import InforCard from "./InforCard";
+import InforAir from "./InforAir";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -147,6 +149,11 @@ const Device = () => {
         component={CameraScreen}
         options={{ title: "Check camera",headerShown: false  }}
       />
+     <Stack.Screen
+        name="Humidity"
+        component={Humidity}
+        options={{ title: "Độ ẩm",headerShown: false  }}
+      />
     </Stack.Navigator>
   );
 };
@@ -190,34 +197,12 @@ const MainTab = ({ navigation }) => {
     })();
   }, []);
 
-  /*  if (!location) {
-    return (
-      <View >
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-*/
-
   const handleTemperatureButtonPress = () => {
     navigation.navigate("TemperatureScreen");
   };
 
   const handleHumidityButtonPress = () => {
-    if (humidity === 0) {
-      // Set humidity value initially
-      const randomHumidity = Math.floor(Math.random() * 100);
-      setHumidity(randomHumidity);
-    }
-
-    // Toggle humidity updates
-    setInterval(() => {
-      setHumidity((prevHumidity) => {
-        // Generate a new random humidity between 0 to 100
-        const randomHumidity = Math.floor(Math.random() * 101);
-        return randomHumidity;
-      });
-    }, 3000);
+    navigation.navigate("Humidity");
   };
   // Define the weather text based on temperature
   let weatherText = "";
@@ -262,8 +247,9 @@ const MainTab = ({ navigation }) => {
     <View style={styles.contentContainer}>
       <View style={styles.content}>
         <Swiper  loop={true} autoplay={true} autoplayTimeout={5} dotColor="white">
+          <InforCard/>
           <WeatherCard/>
-          <WeatherCard/>
+          <InforAir/>
         </Swiper>
       </View>
       <Text style={styles.deviceText}>Device</Text>
@@ -339,7 +325,7 @@ const MainTab = ({ navigation }) => {
             onPress={handleAddDeviceButtonPress}
           >
             <Icon name="plus" size={40} color={colors.primary} />
-            <Text style={styles.text}>Thêm thiết bị</Text>
+            <Text style={styles.text}>Update</Text>
           </TouchableOpacity>
         </View>
       </View>

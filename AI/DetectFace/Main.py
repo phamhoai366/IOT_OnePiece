@@ -35,7 +35,8 @@ while True:
     print(data)
 
     image = cv2.resize(image, (224, 224), interpolation=cv2.INTER_AREA)
-    cv2.imshow("Webcam", image)
+    a = cv2.resize(image, (500, 500), interpolation=cv2.INTER_AREA)
+    cv2.imshow("Webcam", a)
     if data==0:
         image = np.asarray(image, dtype=np.float32).reshape(1, 224, 224, 3)
         image = (image / 127.5) - 1

@@ -1,50 +1,116 @@
-import React from "react";
-import { View, StyleSheet, Text, StatusBar } from "react-native";
-import AnimatedCircularProgress from "react-native-progress-circle";
+import React, { useState ,useEffect} from "react";
+import { View, StyleSheet, Text, TouchableOpacity, StatusBar, Image } from "react-native";
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import {
+  getDatabase,
+  ref,
+  update,
+  get,
+  onValue
+} from "firebase/database";
+import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
 
-const TemperatureScreen = () => {
-  const progress = 75;
+export default function TemperatureScreen() {
+  const [temperature, setTemperature] = useState(0);
+
+  const handleLoginFaceBook = () => { };
+  const handleLoginGoogle = () => { };
+  const handleLoginFaceID = () => { };
+
+  useEffect(() => {
+    const db = getDatabase(FireBaseConfigAPP);
+    const starCountRef = ref(db, 'Nha_A/Room1/');
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      setTemperature(data.Temperature)
+    });
+  });
 
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          flex: 3,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <AnimatedCircularProgress
-          size={120} // Kích thước của hình tròn (đơn vị pixel)
-          width={10} // Độ dày của đường viền (đơn vị pixel)
-          fill={60} // Giá trị phần trăm muốn điền vào hình tròn
-          tintColor="#00e0ff" // Màu sắc của phần đã được điền (mặc định là xanh dương)
-          backgroundColor="#3d5875" // Màu sắc nền của hình tròn (mặc định là xám đậm)
-          rotation={0} // Góc quay của hình tròn (đơn vị độ)
-          lineCap="round" // Kiểu đầu mút cho đường viền (round hoặc square)
+    <View style={{
+      flex: 1, marginTop: StatusBar.currentHeight || 0,
+    }}>
+      <View style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+        <Image
+          style={{
+            width: 170,
+            height: 170,
+
+          }}
+          source={require("../assets/air-conditioner.png")}
+          resizeMode="contain"
         />
       </View>
-      <View
-        style={{
-          flex: 3,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#3360ff",
-          padding: 5,
-        }}
-      >
-        <Text></Text>
+      <View style={{
+        flex: 4,
+        backgroundColor: "#f8fbff"
+      }}>
+        <View style={styles.Part1}>
+          <Text style={{ color: "#3360ff", fontSize: 30 , marginTop:-50}}>Nhiệt độ</Text>
+
+          <AnimatedCircularProgress
+            size={270}
+            width={30}
+            fill={temperature*100/50}
+            arcSweepAngle={180}
+            rotation={270}
+            tintColor="#00e0ff"
+            onAnimationComplete={() => console.log('onAnimationComplete')}
+            backgroundColor="#3d5875"
+            style={{}} >
+            {
+              (fill) => (
+                <Text style={{ color: "#3360ff", fontSize: 30 }}>
+                  {temperature} °C
+                </Text>
+              )
+            }
+          </AnimatedCircularProgress>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity onPress={handleLoginFaceBook}>
+              <Image
+                style={styles.logingg}
+                source={require("../assets/fan.png")}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleLoginGoogle}>
+              <Image
+                style={styles.logingg}
+                source={require("../assets/on-off-button.png")}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleLoginFaceID}>
+              <Image
+                style={styles.logingg}
+                source={require("../assets/thermometer.png")}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </View>
+
+        </View>
+
       </View>
+
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
+  Part1: {
     flex: 1,
-
-    marginTop: StatusBar.currentHeight || 0,
+    alignItems: "center",
+    justifyContent: "center",
   },
-});
-
-export default TemperatureScreen;
+  logingg: {
+    width: 60,
+    height: 60,
+    margin: 20,
+  },
+})

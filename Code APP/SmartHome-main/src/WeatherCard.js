@@ -1,7 +1,5 @@
-import React,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import Swiper from "react-native-swiper";
-import { colors } from "../theme";
 import axios from 'axios';
 
 const Card = () => {
@@ -9,22 +7,35 @@ const Card = () => {
   const [temperature, setTemperature] = useState(0);
   const [wind, setWind] = useState(0);
   const [H, setH] = useState(0);
-  const API_KEY="dc21b0d642811c70dfd343865abd69a4"
-  let url=`http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=${API_KEY}`
-  axios.get(`http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=${API_KEY}`)
-  .then(response => {
-    const t = response.data.main.temp;
-    const w=response.data.wind.speed;
-    const today = new Date();
+  const [timenow, setTime] = useState();
+  const [day, setDay] = useState();
+  const API_KEY = "dc21b0d642811c70dfd343865abd69a4"
 
-    setWind(w)
-    setTemperature(t-273.15)
-    setH(response.data.main.humidity)
-    //console.log(today);
-  })
-  .catch(error => {
-    console.error(error);
+  useEffect(() => {
+    const today = new Date();
+    const timenow = today.getHours() + "h" + today.getMinutes();
+    var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+    setTime(timenow)
+    setDay(date)
+    console.log(date);
+    let url = `http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=${API_KEY}`
+    axios.get(`http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=${API_KEY}`)
+      .then(response => {
+        const t = response.data.main.temp;
+        const w = response.data.wind.speed;
+        setWind(w)
+        setTemperature(t - 273.15)
+        setH(response.data.main.humidity)
+
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
   });
+
+
+
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardContent}>
@@ -43,8 +54,8 @@ const Card = () => {
             }}
           >
             <Text style={styles.text1}>Hà Nội</Text>
-            <Text style={styles.text1}>13h00, Mon,16 AUG 2023 </Text>
-            <Text style={{ fontSize: 40,color:"white" }}>{temperature} °C</Text>
+            <Text style={styles.text1}>{timenow}, {day} </Text>
+            <Text style={{ fontSize: 40, color: "white" }}>{temperature} °C</Text>
             <Text style={styles.text1}>Tốc độ gió: {wind} m/s</Text>
             <Text style={styles.text1}>Tốc độ ẩm: {H} %</Text>
           </View>
@@ -55,7 +66,7 @@ const Card = () => {
               borderColor: "white",
               borderWidth: 2,
               borderRadius: 20,
-              backgroundColor:"white"
+              backgroundColor: "white"
             }}
             source={require("../assets/weather/clouds.png")}
           />
@@ -71,8 +82,8 @@ const WeatherCard = () => {
 const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
-    elevation: 5,
-    borderRadius:20,
+    elevation: 2,
+    
   },
   cardImage: {
     flexDirection: "row",
@@ -85,8 +96,8 @@ const styles = StyleSheet.create({
   },
   text1: {
     margin: 2,
-    color:"white",
-    fontSize:16
+    color: "white",
+    fontSize: 16
   },
 });
 

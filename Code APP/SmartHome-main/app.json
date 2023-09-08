@@ -17,14 +17,19 @@
       "supportsTablet": true
     },
     "android": {
-      
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-        
       },
-      "permissions": ["ACCESS_FINE_LOCATION"]
-      
+      "permissions": [
+        "ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.hieu2k2boss.IOTApp"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2f9838ab-7e61-4582-b8ae-b7250464419b"
+      }
     }
   }
 }

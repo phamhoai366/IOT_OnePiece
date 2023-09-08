@@ -8,12 +8,7 @@ import ChatbotScreen from "./src/ChatbotScreen";
 import HistoryScreen from "./src/HistoryScreen";
 import NotificationScreen from "./src/NotificationScreen";
 import SettingScreen from "./src/SettingScreen";
-import LightScreen from "../src/LightScreen";
-import TemperatureScreen from "../src/TemperatureScreen";
-import DoorScreen from "../src/DoorScreen";
-import ElectricityScreen from "../src/ElectricityScreen";
-import AirQualityScreen from "../src/AirQualityScreen";
-import CameraScreen from "../src/CameraScreen";
+
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {

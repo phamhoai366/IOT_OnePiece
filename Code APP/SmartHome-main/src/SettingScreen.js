@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet,StatusBar,Image } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import UserProfileCard from "../src/UserProfileCard";
 import SettingCard from "./SettingCard";
@@ -9,10 +9,10 @@ const SettingScreen = () => {
 
   return (
     <View style={styles.container}>
-<UserProfileCard/>
-    <SettingCard  />
+      <UserProfileCard />
+      <SettingCard />
 
-  </View>
+    </View>
   );
 };
 
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 30,
-    backgroundColor:'#ffffff',
+    backgroundColor: '#ffffff',
     marginTop: StatusBar.currentHeight || 0,
   }
 });

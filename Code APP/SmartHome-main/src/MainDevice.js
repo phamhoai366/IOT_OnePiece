@@ -19,6 +19,9 @@ import DoorScreen from "../src/DoorScreen";
 import ElectricityScreen from "../src/ElectricityScreen";
 import AirQualityScreen from "../src/AirQualityScreen";
 import CameraScreen from "../src/CameraScreen";
+import Humidity from ".Humidity/"
+
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -68,6 +71,11 @@ const MainDevice = () => {
         component={CameraScreen}
         options={{ title: "Check camera" }}
       />
+      <Stack.Screen
+        name="Humidity"
+        component={Humidity}
+        options={{ title: "Check camera" }}
+      />
     </Stack.Navigator>
   );
 };
@@ -93,6 +101,9 @@ const MainTab = ({ navigation }) => {
 
   const handleAirQualityButtonPress = () => {
     navigation.navigate("AirQualityScreen");
+  };
+  const handleHumidityButtonPress = () => {
+    navigation.navigate("Humidity");
   };
 
   const handleCameraButtonPress = () => {

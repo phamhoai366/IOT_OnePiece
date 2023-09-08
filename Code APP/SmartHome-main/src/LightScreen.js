@@ -6,7 +6,6 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
-  TouchableOpacity,
   StatusBar
 } from "react-native";
 import Slider from "@react-native-community/slider";
@@ -14,13 +13,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import {
   getDatabase,
   ref,
-  set,
-  onValue,
-  child,
-  get,
-  off,
   update,
-  push,
 } from "firebase/database";
 import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
 

@@ -18,8 +18,8 @@ const UserProfileCard = ({ name, email }) => {
         <Image source={require("../assets/device/user.png")} style={styles.logo} />
       </View>
       <View style={styles.userInfo}>
-        <Text style={styles.userName}>Nguyen Kim Anh</Text>
-        <Text style>ka@gmail.com</Text>
+        <Text style={styles.userName}>User 1</Text>
+        <Text style>abc@gmail.com</Text>
         <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
           <Text style={styles.logoutText}>Đăng xuất</Text>
         </TouchableOpacity>

@@ -1,176 +1,99 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { useState ,useEffect} from "react";
+import { View, StyleSheet, Text, TouchableOpacity, StatusBar, Image } from "react-native";
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import {
+  getDatabase,
+  ref,
+  update,
+  get,
+  onValue
+} from "firebase/database";
+import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
+import axios from 'axios';
 
-const App = () => {
-  const [airQuality, setAirQuality] = useState('');
-  const [recommendation, setRecommendation] = useState('');
-
-  useEffect(() => {
-    // Simulated API call to get air quality data
-    fetchAirQualityData()
-      .then((data) => {
-        setAirQuality(data.airQuality);
-        generateRecommendation(data.airQuality);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  const fetchAirQualityData = async () => {
-    // lấy dữ liệu chất lượng không khí từ API
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ airQuality: 'Good' }); // Replace with actual air quality data
-      }, 2000);
-    });
-  };
-//nhận vào chất lượng không khí và dựa vào giá trị đó để tạo ra khuyến nghị phù hợp
-  const generateRecommendation = (airQuality) => {
-    let recommendation = '';
-
-    if (airQuality === 'Good') {
-      recommendation = 'The air quality is good. It is safe to engage in outdoor activities.';
-    } else if (airQuality === 'Moderate') {
-      recommendation =
-        'The air quality is moderate. You may consider limiting prolonged outdoor activities.';
-    } else if (airQuality === 'Unhealthy') {
-      recommendation =
-        'The air quality is unhealthy. It is recommended to stay indoors and avoid outdoor activities.';
-    } else {
-      recommendation = 'Unable to determine air quality. Please try again later.';
-    }
-
-    setRecommendation(recommendation);
-  };
-  //kiểm tra giá trị của airQuality
-  const renderAirQualityLogo = () => {
-    let imageSource = require('../assets/good.png'); // Default logo for good air quality
-
-    if (airQuality === 'Moderate') {
-      imageSource = require('../assets/moderate.png');
-    } else if (airQuality === 'Unhealthy') {
-      imageSource = require('../assets/unhealthy.png');
-    }
-
-    return <Image source={imageSource} style={styles.logo} />;
-  };
-
-  const handleDoorOpen = () => {
-    console.log('Door open button pressed');
-    // Perform actions for door open
-  };
-
-  const handleFanSpeedChange = () => {
-    console.log('Fan speed button pressed');
-    // Perform actions for fan speed change
-  };
-
-  const handleMaskOn = () => {
-    console.log('Mask on button pressed');
-    // Perform actions for mask on
-  };
+export default function TemperatureScreen() {
+  const [pm25, setPM25] = useState(null);
+    const API_KEY = "01553ea3-817e-48b3-b1a5-5a94ff5773a4"
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`https://api.airvisual.com/v2/city?city=Hanoi&state=Hanoi&country=Vietnam&key=${API_KEY}`);
+          const data = response.data;
+          const pm25Value = data.data.current.pollution.aqicn;
+          setPM25(pm25Value);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+  
+      fetchData();
+    }, []);
 
   return (
-    <View style={[styles.container, { backgroundColor: '#ffff' }]}>
-      <Text style={styles.title}>Air Quality</Text>
-      {renderAirQualityLogo()}
-      <Text style={styles.airQualityText}>{airQuality}</Text>
+    <View style={{
+      flex: 1, marginTop: StatusBar.currentHeight || 0,
+    }}>
+      <View style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+        <Image
+          style={{
+            width: 170,
+            height: 170,
 
-      <Text style={styles.recommendation}>{recommendation}</Text>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: airQuality !== 'Good' ? '#D3D3D3' : '#FF0000' }]}
-          onPress={handleDoorOpen}
-          disabled={airQuality !== 'Good'}
-        >
-          <Icons name="door-open" size={20} color="#ffff" />
-          <Text style={styles.buttonText}>Door Open</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: airQuality === 'Unhealthy' ? '#D3D3D3' : '#00FF00' }]}
-          onPress={handleFanSpeedChange}
-          disabled={airQuality === 'Unhealthy'}
-        >
-          <Icons name="fan" size={20} color="#ffff" />
-          <Text style={styles.buttonText}>Fan Speed</Text>
-          </TouchableOpacity>
-  
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: airQuality === 'Good' ? '#D3D3D3' : '#0000FF' }]}
-            onPress={handleMaskOn}
-            disabled={airQuality === 'Good'}
-          >
-            <Icon name="user-secret" size={20} color="#ffff" />
-            <Text style={styles.buttonText}>Mask On</Text>
-          </TouchableOpacity>
-        </View>
+          }}
+          source={require("../assets/air-conditioner.png")}
+          resizeMode="contain"
+        />
       </View>
-    );
-  };
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
-      borderWidth: 3,
-      borderRadius: 10,
-      borderColor: '#FF8080',
-    },
-    title: {
-      fontSize: 30,
-      fontWeight: 'bold',
-      marginBottom: 80,
-      marginTop: 1,
-    },
-    logo: {
-      width: 240,
-      height: 240,
-      resizeMode: 'contain',
-      marginBottom: 20,
-    },
-    airQualityText: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 20,
-    },
-    recommendation: {
-      fontSize: 16,
-      textAlign: 'center',
-      marginBottom: 20,
-    },
-    buttonContainer: {
-      width: '100%',
-      marginTop: 60,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    button: {
-      flex: 1,
-      flexDirection: 'column',
-      alignItems: 'center',
-      backgroundColor: '#ffff',
-      borderWidth: 5,
-      borderColor: '#ff8080',
-      
-      padding: 10,
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-      borderRadius: 4,
-      marginBottom: 20,
-      marginRight: 10,
-    },
-    buttonText: {
-      marginLeft: 10,
-      color: '#000',
-    },
-  });
-  
-  export default App;
-  
+      <View style={{
+        flex: 4,
+        backgroundColor: "#f8fbff"
+      }}>
+        <View style={styles.Part1}>
+          
+
+          <AnimatedCircularProgress
+            size={200}
+            width={30}
+            fill={pm25*100/500}
+            arcSweepAngle={180}
+            rotation={270}
+            tintColor="#00e0ff"
+            onAnimationComplete={() => console.log('onAnimationComplete')}
+            backgroundColor="#3d5875"
+            //style={{marginTop:10}} 
+            >
+            {
+              (fill) => (
+                <Text style={{ color: "#3360ff", fontSize: 20 }}>
+                  {pm25}
+                </Text>
+              )
+            }
+          </AnimatedCircularProgress>
+          <Text style={{ color: "#3360ff", fontSize: 20 ,}}>Chất lượng không khí</Text>
+        
+
+        </View>
+
+      </View>
+
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  Part1: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  logingg: {
+    width: 60,
+    height: 60,
+    margin: 20,
+  },
+})
