@@ -4,20 +4,15 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  ScrollView,
-  Image,
   StatusBar
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors } from "../theme";
 import Swiper from "react-native-swiper";
 import * as Location from "expo-location";
-import MapView, { Marker } from "react-native-maps";
-import { reverseGeocodeAsync } from "expo-location";
 
 
 // Import screens from separate code.js files
@@ -36,6 +31,8 @@ import WeatherCard from "./WeatherCard";
 import Humidity from "./Humidity"
 import InforCard from "./InforCard";
 import InforAir from "./InforAir";
+import Gas from "./Gas";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -43,17 +40,7 @@ const Stack = createStackNavigator();
 const API_KEY="dc21b0d642811c70dfd343865abd69a4"
 let url=`http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=${API_KEY}`
 const MainDeviceScreen = () => {
-  const [temperature, setTemperature] = useState(0);
-  const [humidity, setHumidity] = useState(0);
-  const handleTemperatureButtonPress = () => {
-    // Set temperature value
-    const randomTemp = Math.floor(Math.random() * 100);
-    setTemperature(randomTemp);
-  };
-  const handleHumidityButtonPress = () => {
-    const randomHumidity = Math.floor(Math.random() * 100);
-    setHumidity(randomHumidity);
-  };
+
 
   return (
     <Tab.Navigator
@@ -154,6 +141,11 @@ const Device = () => {
         component={Humidity}
         options={{ title: "Độ ẩm",headerShown: false  }}
       />
+      <Stack.Screen
+        name="Gas"
+        component={Gas}
+        options={{ title: "Gas",headerShown: false  }}
+      />
     </Stack.Navigator>
   );
 };
@@ -235,7 +227,7 @@ const MainTab = ({ navigation }) => {
 
   const handleGasButtonPress = () => {
     // Chuyển hướng đến màn hình Khí gas (GasScreen)
-    // navigation.navigate('GasScreen');
+     navigation.navigate('Gas');
   };
 
   const handleAddDeviceButtonPress = () => {

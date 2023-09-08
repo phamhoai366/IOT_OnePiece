@@ -9,8 +9,6 @@ const Card = () => {
   const [H, setH] = useState(0);
   const [timenow, setTime] = useState();
   const [day, setDay] = useState();
-  const [NameWeather, setNameWeather] = useState();
-  const [imagePath, setImagePath] = useState('../assets/weather/Clouds.png');
   const API_KEY = "dc21b0d642811c70dfd343865abd69a4"
   let weatherText = "";
 
