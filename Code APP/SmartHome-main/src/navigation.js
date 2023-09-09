@@ -7,7 +7,7 @@ import SignUpScreen from './src/Signup';
 import ForgotPassScreen from './src/ForgotPass';
 import DashboardScreen from './src/Dashboard';
 import ResetPasswordScreen from './src/ResetPasswordScreen';
-//import { createAppContainer } from 'react-navigation';
+
 const Stack = createStackNavigator();
 
 const App = () => {

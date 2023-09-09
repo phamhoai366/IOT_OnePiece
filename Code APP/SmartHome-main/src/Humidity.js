@@ -1,30 +1,64 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, StatusBar, Image } from "react-native";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import DropDown from './DropDown';
 import {
   getDatabase,
   ref,
-  update,
-  get,
   onValue
 } from "firebase/database";
 import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
 
-export default function TemperatureScreen() {
-  const [temperature, setTemperature] = useState(0);
 
-  const handleLoginFaceBook = () => { };
-  const handleLoginGoogle = () => { };
-  const handleLoginFaceID = () => { };
+export default function Humidity() {
+
+  const [temperature, setTemperature] = useState(0);
+  const [Room, setRoom] = useState("Room1");
+
+  const handleFan = () => { };
+  const handleOnOff = () => { };
+  const handlethermometer = () => { };
+
+  const data = [
+    { label: 'LivingRoom', value: 'LivingRoom' },
+    { label: 'Kitchen', value: 'Kitchen' },
+    { label: 'BedRoom', value: 'BedRoom' },
+    { label: 'WorkRoom', value: 'WorkRoom' },
+  ];
+
+// Xử lí việc chọn Item
+  const handleSelect = (item) => {
+    
+    if(item.value=='LivingRoom'){
+      setRoom("Room4")
+      console.log(1);
+    }
+    if(item.value=='Kitchen'){
+      setRoom("Room1")
+      console.log(2);
+    }
+    if(item.value=='BedRoom'){
+      setRoom("Room2")
+      console.log(3);
+    }
+    if(item.value=='WorkRoom'){
+      setRoom("Room3")
+      console.log(4);
+    }
+
+  };
 
   useEffect(() => {
     const db = getDatabase(FireBaseConfigAPP);
-    const starCountRef = ref(db, 'Nha_A/Room1/');
+    const starCountRef = ref(db, "Nha_A/" + `${Room}` + "/");
     onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
       setTemperature(data.Humidity)
+      //console.log(data.Temperature)
     });
   });
+
+
 
   return (
     <View style={{
@@ -34,28 +68,29 @@ export default function TemperatureScreen() {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor:"#d0efff"
       }}>
         <Image
           style={{
-            width: 170,
-            height: 170,
+            width: 100,
+            height: 100,
 
           }}
-          source={require("../assets/air-conditioner.png")}
+          source={require("../assets/weather/drop.png")}
           resizeMode="contain"
         />
       </View>
       <View style={{
         flex: 4,
-        backgroundColor: "#f8fbff"
+        //backgroundColor: "#d0efff"
       }}>
         <View style={styles.Part1}>
-          <Text style={{ color: "#3360ff", fontSize: 30 , marginTop:-50}}>Độ ẩm</Text>
+          <Text style={{ color: "#3360ff", fontSize: 25, marginTop: -50 }}>Độ ẩm phòng</Text>
 
           <AnimatedCircularProgress
-            size={270}
+            size={200}
             width={30}
-            fill={temperature}
+            fill={temperature }
             arcSweepAngle={180}
             rotation={270}
             tintColor="#00e0ff"
@@ -70,6 +105,31 @@ export default function TemperatureScreen() {
               )
             }
           </AnimatedCircularProgress>
+          <DropDown label="Select an option" data={data} onSelect={handleSelect} />
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity onPress={handleFan}>
+              <Image
+                style={styles.logingg}
+                source={require("../assets/fan.png")}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleOnOff}>
+              <Image
+                style={styles.logingg}
+                source={require("../assets/on-off-button.png")}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handlethermometer}>
+              <Image
+                style={styles.logingg}
+                source={require("../assets/thermometer.png")}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </View>
+
         </View>
 
       </View>

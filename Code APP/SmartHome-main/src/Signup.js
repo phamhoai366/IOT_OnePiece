@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity,Alert } from 'react-native';
 import smart from '../assets/smart.png';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 

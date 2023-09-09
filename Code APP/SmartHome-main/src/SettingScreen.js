@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Image } from "react-native";
+import { View, StyleSheet, StatusBar} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import UserProfileCard from "../src/UserProfileCard";
 import SettingCard from "./SettingCard";

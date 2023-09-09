@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
 
 const SettingCard = (props) => {

@@ -16,7 +16,6 @@ import {
 import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
 
 const App = () => {
-  const [unlockMethod, setUnlockMethod] = useState("");
 
 
  const HandleDoor = () => {

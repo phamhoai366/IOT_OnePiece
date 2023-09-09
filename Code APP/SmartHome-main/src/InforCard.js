@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import axios from 'axios';
 
 const InforCard = () => {
 

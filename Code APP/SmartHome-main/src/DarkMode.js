@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, Switch, StyleSheet,TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+
 const DarkModeScreen = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 

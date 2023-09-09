@@ -1,14 +1,6 @@
 import React, { useState ,useEffect} from "react";
-import { View, StyleSheet, Text, TouchableOpacity, StatusBar, Image } from "react-native";
+import { View, StyleSheet, Text, StatusBar, Image } from "react-native";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import {
-  getDatabase,
-  ref,
-  update,
-  get,
-  onValue
-} from "firebase/database";
-import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
 import axios from 'axios';
 
 export default function TemperatureScreen() {
