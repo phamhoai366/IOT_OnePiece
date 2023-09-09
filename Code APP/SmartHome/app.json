@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.hieu2k2boss.SmartHome"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3d3cc728-5bae-4b48-b6cb-0527418e1881"
+      }
+    },
+    "owner": "hieu2k2boss"
   }
 }

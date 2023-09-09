@@ -40,8 +40,8 @@ import InforAir from "./InforAir";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const API_KEY="dc21b0d642811c70dfd343865abd69a4"
-let url=`http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=${API_KEY}`
+const API_KEY = "dc21b0d642811c70dfd343865abd69a4"
+let url = `http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=${API_KEY}`
 const MainDeviceScreen = () => {
   const [temperature, setTemperature] = useState(0);
   const [humidity, setHumidity] = useState(0);
@@ -86,27 +86,27 @@ const MainDeviceScreen = () => {
       <Tab.Screen
         name="MainDevice"
         component={Device}
-        options={{ tabBarLabel: "MainDevice" ,headerShown: false }}
+        options={{ tabBarLabel: "MainDevice", headerShown: false }}
       />
       <Tab.Screen
         name="Chatbot"
         component={Chatbot}
-        options={{ tabBarLabel: "Chatbot" ,headerShown: false}}
+        options={{ tabBarLabel: "Chatbot", headerShown: false }}
       />
       <Tab.Screen
         name="History"
         component={History}
-        options={{ tabBarLabel: "History",headerShown: false  }}
+        options={{ tabBarLabel: "History", headerShown: false }}
       />
       <Tab.Screen
         name="Notification"
         component={Notification}
-        options={{ tabBarLabel: "Notifications",headerShown: false  }}
+        options={{ tabBarLabel: "Notifications", headerShown: false }}
       />
       <Tab.Screen
         name="Settings"
         component={Settings}
-        options={{ tabBarLabel: "Settings",headerShown: false  }}
+        options={{ tabBarLabel: "Settings", headerShown: false }}
       />
     </Tab.Navigator>
   );
@@ -117,42 +117,42 @@ const Device = () => {
       <Stack.Screen
         name="Main"
         component={MainTab}
-        options={{ headerShown: false ,headerShown: false }}
+        options={{ headerShown: false, headerShown: false }}
       />
       <Stack.Screen
         name="LightScreen"
         component={LightScreen}
-        options={{ title: "Light",headerShown: false }}
+        options={{ title: "Light", headerShown: false }}
       />
       <Stack.Screen
         name="TemperatureScreen"
         component={TemperatureScreen}
-        options={{ title: "Temperature",headerShown: false  }}
+        options={{ title: "Temperature", headerShown: false }}
       />
       <Stack.Screen
         name="DoorScreen"
         component={DoorScreen}
-        options={{ title: "Door",headerShown: false  }}
+        options={{ title: "Door", headerShown: false }}
       />
       <Stack.Screen
         name="ElectricityScreen"
         component={ElectricityScreen}
-        options={{ title: "Electricity",headerShown: false  }}
+        options={{ title: "Electricity", headerShown: false }}
       />
       <Stack.Screen
         name="AirQualityScreen"
         component={AirQualityScreen}
-        options={{ title: "Air",headerShown: false  }}
+        options={{ title: "Air", headerShown: false }}
       />
       <Stack.Screen
         name="CameraScreen"
         component={CameraScreen}
-        options={{ title: "Check camera",headerShown: false  }}
+        options={{ title: "Check camera", headerShown: false }}
       />
-     <Stack.Screen
+      <Stack.Screen
         name="Humidity"
         component={Humidity}
-        options={{ title: "Độ ẩm",headerShown: false  }}
+        options={{ title: "Độ ẩm", headerShown: false }}
       />
     </Stack.Navigator>
   );
@@ -246,10 +246,10 @@ const MainTab = ({ navigation }) => {
   return (
     <View style={styles.contentContainer}>
       <View style={styles.content}>
-        <Swiper  loop={true} autoplay={true} autoplayTimeout={8} dotColor="white" >
-          <InforCard/>
-          <WeatherCard/>
-          <InforAir/>
+        <Swiper loop={true} autoplay={true} autoplayTimeout={8} dotColor="white" >
+          <InforCard />
+          <WeatherCard />
+          <InforAir />
         </Swiper>
       </View>
       <Text style={styles.deviceText}>Device</Text>
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 10,
-    backgroundColor:"#f8fbff"
+    backgroundColor: "#f8fbff"
   },
   text: {
     marginTop: 10,
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     textAlign: "center",
-    backgroundColor:"#f8fbff"
+    backgroundColor: "#f8fbff"
   },
 });
 

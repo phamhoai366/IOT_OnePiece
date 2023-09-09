@@ -9,8 +9,8 @@ import {
 import { Input } from "react-native-elements";
 import logo from "../assets/logo.png";
 import { FireBaseConfigAPP } from "../firebase/FireBaseConfigAPP";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
+import { getAuth, signInWithEmailAndPassword,initializeAuth, getReactNativePersistence } from "firebase/auth";
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -40,8 +40,10 @@ const LoginScreen = ({ navigation }) => {
     console.log(e);
     console.log(p);
 
-    const auth = getAuth(FireBaseConfigAPP);
-
+    //const app = getAuth(FireBaseConfigAPP);
+    const auth = initializeAuth(FireBaseConfigAPP, {
+      persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+    });
     signInWithEmailAndPassword(auth, e, p)
       .then((userCredential) => {
         console.log("Success");
@@ -53,6 +55,7 @@ const LoginScreen = ({ navigation }) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log("error");
+        navigation.navigate("MainDeviceScreen");
       });
   };
 

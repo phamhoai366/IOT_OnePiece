@@ -32,6 +32,8 @@ import Humidity from "./Humidity"
 import InforCard from "./InforCard";
 import InforAir from "./InforAir";
 import Gas from "./Gas";
+import Status from "./Status";
+import QR from "./QR";
 
 
 const Tab = createBottomTabNavigator();
@@ -45,8 +47,8 @@ const MainDeviceScreen = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarActiveTintColor: "blue",
-        tabBarInactiveTintColor: "gray",
+        tabBarActiveTintColor: "#189ad3",
+        tabBarInactiveTintColor: "#3360ff",
         tabBarStyle: [
           {
             display: "flex",
@@ -100,11 +102,14 @@ const MainDeviceScreen = () => {
 };
 const Device = () => {
   return (
-    <Stack.Navigator initialRouteName="Main">
+    <Stack.Navigator initialRouteName="Main" 
+    screenOptions={{
+      headerStatusBarHeight: StatusBar.currentHeight,
+    }}>
       <Stack.Screen
         name="Main"
         component={MainTab}
-        options={{ headerShown: false ,headerShown: false }}
+        options={{ headerShown: false ,headerShown: false  }}
       />
       <Stack.Screen
         name="LightScreen"
@@ -145,6 +150,12 @@ const Device = () => {
         name="Gas"
         component={Gas}
         options={{ title: "Gas",headerShown: false  }}
+      />
+      <Stack.Screen
+        name="QR"
+        component={QR}
+        options={{ title: "QR" ,}}
+        //style={{marginTop: StatusBar.currentHeight || 0,}}
       />
     </Stack.Navigator>
   );
@@ -237,6 +248,7 @@ const MainTab = ({ navigation }) => {
 
   return (
     <View style={styles.contentContainer}>
+      <Status/>
       <View style={styles.content}>
         <Swiper  loop={true} autoplay={true} autoplayTimeout={8} dotColor="white" >
           <InforCard/>
