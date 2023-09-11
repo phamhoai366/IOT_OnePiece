@@ -341,7 +341,7 @@ const MainTab = ({ navigation }) => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    //marginTop: StatusBar.currentHeight || 0,
+   // marginTop: StatusBar.currentHeight || 0,
   },
   wellcome: {
     fontSize: 22,
