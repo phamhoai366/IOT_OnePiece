@@ -5,7 +5,7 @@ from __future__ import print_function
 import tensorflow as tf
 from imutils.video import VideoStream
 
-
+import pyrebase
 import argparse
 import facenet
 import imutils
@@ -19,6 +19,20 @@ import cv2
 import collections
 from sklearn.svm import SVC
 
+firebaseConfig = {
+    "apiKey": "AIzaSyCS3ZavFsU23w1pi4ERbjKRYfUfWVsjFQc",
+    "authDomain": "iotchallenge-7715c.firebaseapp.com",
+    "databaseURL": "https://iotchallenge-7715c-default-rtdb.firebaseio.com",
+    "projectId": "iotchallenge-7715c",
+    "storageBucket": "iotchallenge-7715c.appspot.com",
+    "messagingSenderId": "571304695719",
+    "appId": "1:571304695719:web:a04c828c4ecdb2b17f0882",
+    "measurementId": "G-WJXGQPF0NG",
+    "serviceAccount": "serviceAccount.json",
+}
+
+firebase = pyrebase.initialize_app(firebaseConfig)
+db = firebase.database()
 
 def main():
     parser = argparse.ArgumentParser()
@@ -69,6 +83,9 @@ def main():
                 frame = imutils.resize(frame, width=600)
                 frame = cv2.flip(frame, 1)
 
+                ref = db.child("Nha_A/Room4/Door")
+                data = ref.get().val()
+
                 bounding_boxes, _ = align.detect_face.detect_face(frame, MINSIZE, pnet, rnet, onet, THRESHOLD, FACTOR)
 
                 faces_found = bounding_boxes.shape[0]
@@ -104,8 +121,7 @@ def main():
                                 print("Name: {}, Probability: {}".format(best_name, best_class_probabilities))
 
 
-
-                                if best_class_probabilities > 0.8:
+                                if best_class_probabilities > 0.6:
                                     cv2.rectangle(frame, (bb[i][0], bb[i][1]), (bb[i][2], bb[i][3]), (0, 255, 0), 2)
                                     text_x = bb[i][0]
                                     text_y = bb[i][3] + 20
@@ -117,9 +133,17 @@ def main():
                                                 cv2.FONT_HERSHEY_COMPLEX_SMALL,
                                                 1, (255, 255, 255), thickness=1, lineType=2)
                                     person_detected[best_name] += 1
+
+
+                                    # Mở cửa
+                                    if data==0:
+                                        ref = db.child("Nha_A/Room4")
+                                        d = {
+                                            "Door": 1,
+                                        }
+                                        ref.update(d)
                                 else:
                                     name = "Unknown"
-
                 except:
                     pass
 
