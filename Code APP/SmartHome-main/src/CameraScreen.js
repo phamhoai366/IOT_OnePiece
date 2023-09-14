@@ -15,7 +15,7 @@ export default function App() {
   };
 
   return (
-    <WebView source={{ uri: 'https://www.google.com' }} style={{ flex: 1 , marginTop: StatusBar.currentHeight || 0,}} />
+    <WebView source={{ uri: 'http://192.168.1.100:4747/video' }} style={{ flex: 1 , marginTop: StatusBar.currentHeight || 0,}} />
   );
 }
 

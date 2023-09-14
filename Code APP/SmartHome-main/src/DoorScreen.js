@@ -22,7 +22,7 @@ const App = () => {
   const db = getDatabase(FireBaseConfigAPP);
   //const starCountRef = ref(db, "Nha_A/Room1/");
   update(ref(db, "Nha_A/Room4" + "/"), {
-    Door: 0,
+    Door: 1,
   }).then(() => {
     console.log("Thành công")
   });

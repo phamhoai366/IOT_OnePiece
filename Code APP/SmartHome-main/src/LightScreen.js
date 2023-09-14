@@ -58,7 +58,7 @@ const Led = () => {
               minimumValue={0}
               maximumValue={100}
               value={brightnessValues.livingRoom}
-              onValueChange={(value) => updateBrightness("Room1", value)}
+              onValueChange={(value) => updateBrightness("Room4", value)}
             />
           </View>
 
@@ -82,7 +82,7 @@ const Led = () => {
               minimumValue={0}
               maximumValue={100}
               value={brightnessValues.kitchen}
-              onValueChange={(value) => updateBrightness("Room3", value)}
+              onValueChange={(value) => updateBrightness("Room1", value)}
             />
           </View>
 
@@ -93,7 +93,7 @@ const Led = () => {
               minimumValue={0}
               maximumValue={100}
               value={brightnessValues.workRoom}
-              onValueChange={(value) => updateBrightness("Room4", value)}
+              onValueChange={(value) => updateBrightness("Room3", value)}
             />
           </View>
         </View>
